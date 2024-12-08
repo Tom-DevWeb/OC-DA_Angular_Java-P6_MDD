@@ -1,0 +1,353 @@
+{
+	"info": {
+		"_postman_id": "eb85bd68-bac1-4df7-ab54-3b0fe1cbe9ff",
+		"name": "OC_MDD-P6",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31180412"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Se connecter",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"user@example.com\",\r\n    \"password\": \"password\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{MDD_API_URL}}/users/login",
+							"host": [
+								"{{MDD_API_URL}}"
+							],
+							"path": [
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Récupérer un utilisateur",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{MDD_BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{MDD_API_URL}}/users/{{MDD_USER_ID}}",
+							"host": [
+								"{{MDD_API_URL}}"
+							],
+							"path": [
+								"users",
+								"{{MDD_USER_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "S'inscrire",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"user\",\r\n    \"email\": \"user@example.com\",\r\n    \"password\": \"password\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{MDD_API_URL}}/users/register",
+							"host": [
+								"{{MDD_API_URL}}"
+							],
+							"path": [
+								"users",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modifier ses infos",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{MDD_BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{MDD_API_URL}}/users/{{MDD_USER_ID}}",
+							"host": [
+								"{{MDD_API_URL}}"
+							],
+							"path": [
+								"users",
+								"{{MDD_USER_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Récupérer son profile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{MDD_BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{MDD_API_URL}}/users/me",
+							"host": [
+								"{{MDD_API_URL}}"
+							],
+							"path": [
+								"users",
+								"me"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Article",
+			"item": [
+				{
+					"name": "Créer un article",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{MDD_BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Titre de l'article\",\r\n    \"content\": \"Contenu de l'article\",\r\n    \"theme\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{MDD_API_URL}}/articles",
+							"host": [
+								"{{MDD_API_URL}}"
+							],
+							"path": [
+								"articles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Créer un commentaire",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{MDD_BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"content\": \"Mon commentaire sous l'article\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{MDD_API_URL}}/articles/{{MDD_ARTICLE_ID}}/comments",
+							"host": [
+								"{{MDD_API_URL}}"
+							],
+							"path": [
+								"articles",
+								"{{MDD_ARTICLE_ID}}",
+								"comments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Récupérer des commentaires d'un article",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{MDD_BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{MDD_API_URL}}/articles/{{MDD_ARTICLE_ID}}/comments",
+							"host": [
+								"{{MDD_API_URL}}"
+							],
+							"path": [
+								"articles",
+								"{{MDD_ARTICLE_ID}}",
+								"comments"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Theme",
+			"item": [
+				{
+					"name": "Récupérer les thèmes",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{MDD_BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{MDD_API_URL}}/themes",
+							"host": [
+								"{{MDD_API_URL}}"
+							],
+							"path": [
+								"themes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Enregistrer un abonnement",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{MDD_BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{MDD_API_URL}}/themes/{{MDD_THEME_ID}}/users/{{MDD_USER_ID}}",
+							"host": [
+								"{{MDD_API_URL}}"
+							],
+							"path": [
+								"themes",
+								"{{MDD_THEME_ID}}",
+								"users",
+								"{{MDD_USER_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Supprimer un abonnment",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{MDD_BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{MDD_API_URL}}/themes/{{MDD_THEME_ID}}/users/{{MDD_USER_ID}}",
+							"host": [
+								"{{MDD_API_URL}}"
+							],
+							"path": [
+								"themes",
+								"{{MDD_THEME_ID}}",
+								"users",
+								"{{MDD_USER_ID}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
