@@ -6,8 +6,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 @Repository
 public interface JwtRepository extends JpaRepository<Jwt, Long> {
@@ -19,8 +19,9 @@ public interface JwtRepository extends JpaRepository<Jwt, Long> {
 
 
     @Query("SELECT j FROM Jwt j WHERE j.user.id = :idUser")
-    Stream<Jwt> findAllTokenForThisIdUser(@Param("idUser") Long idUser);
+    List<Jwt> findAllTokenForThisIdUser(@Param("idUser") Long idUser);
 
+    //TODO: A faire
     void deleteAllByExpiredAndDisable(boolean expired, boolean disable);
 
     Optional<Jwt> findByRefreshTokenValue(String refreshTokenRequest);

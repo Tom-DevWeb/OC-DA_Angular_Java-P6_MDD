@@ -4,11 +4,11 @@ import com.mdd.back.dto.requests.RegisterRequestDto;
 import com.mdd.back.entities.User;
 import com.mdd.back.repositories.UserRepository;
 import com.mdd.back.security.mapper.UserMapper;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
 
 @Service
 public class UserService implements UserDetailsService {
@@ -30,12 +30,13 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
     }
 
+    //TODO: A faire
     public void findById(Long userId) {}
 
     @Override
     public User loadUserByUsername(String username) throws UsernameNotFoundException {
         return this.userRepository.findByEmail(username)
-                .orElseThrow(() -> new UsernameNotFoundException("Email not found"));
+                .orElseThrow(() -> new BadCredentialsException("Mauvaise authentification"));
     }
 
 

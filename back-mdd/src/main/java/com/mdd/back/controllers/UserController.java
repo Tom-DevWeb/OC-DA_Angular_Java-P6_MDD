@@ -43,16 +43,19 @@ public class UserController {
         userService.register(registerRequestDto);
     }
 
+    //TODO: A faire
     @GetMapping("/{id}")
     public void findById(@PathVariable Long id) {
         userService.findById(id);
     }
 
+    //TODO: A faire
     @PostMapping("/refresh-token")
     public @ResponseBody Map<String, String> refreshToken(@Valid @RequestBody RefreshTokenDto refreshTokenDto) {
         return jwtService.createRefreshToken(refreshTokenDto);
     }
 
+    //TODO: A faire
     @PostMapping("/disconnect")
     public void disconnect() {
         jwtService.disconnect();

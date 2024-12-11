@@ -22,11 +22,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import static io.jsonwebtoken.Claims.EXPIRATION;
 import static io.jsonwebtoken.Claims.SUBJECT;
-
 
 @Service
 public class JWTService {
@@ -70,6 +68,7 @@ public class JWTService {
         return jwtMap;
     }
 
+    //TODO: A Verifier
     public Map<String, String> createRefreshToken(RefreshTokenDto refreshTokenDto) {
         Jwt jwt = this.jwtRepository.findByRefreshTokenValue(refreshTokenDto.refreshToken()).orElseThrow(() -> new RuntimeException("Token invalide"));
         if (jwt.getRefreshToken().isExpired() || jwt.getRefreshToken().getExpiration().isBefore(Instant.now())) {
@@ -81,14 +80,15 @@ public class JWTService {
         return this.generate(user.getEmail());
     }
 
+    //TODO: A vérifier (createRefreshToken)
     private void disableExistingTokens(Long idUser) {
-        final List<Jwt> jwtList = this.jwtRepository.findAllTokenForThisIdUser(idUser).peek(
+        final List<Jwt> jwtList = this.jwtRepository.findAllTokenForThisIdUser(idUser);
+        jwtList.forEach(
                 jwt -> {
                     jwt.setDisable(true);
                     jwt.setExpired(true);
                 }
-        ).collect(Collectors.toList());
-
+        );
         this.jwtRepository.saveAll(jwtList);
     }
 
