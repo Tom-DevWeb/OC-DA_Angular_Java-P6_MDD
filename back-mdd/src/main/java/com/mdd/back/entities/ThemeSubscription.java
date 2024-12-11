@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "THEME_SUBSCRIPTION")
+@Table(name = "theme_subscription")
 public class ThemeSubscription {
 
     @EmbeddedId
