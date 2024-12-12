@@ -16,7 +16,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
@@ -38,7 +37,6 @@ public class WebConfig {
                         authorizationManagerRequestMatcherRegistry -> {
                             AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry
                                     authorizationManagerRequestMatcherRegistry1 = authorizationManagerRequestMatcherRegistry
-                                    .requestMatchers(GET, "/test/**").permitAll()
                                     .requestMatchers(POST, "/users/register").permitAll()
                                     .requestMatchers(POST, "/users/login").permitAll()
                                     .requestMatchers(POST, "/users/refresh-token").permitAll();
