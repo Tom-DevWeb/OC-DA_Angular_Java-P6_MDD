@@ -21,7 +21,6 @@ public interface JwtRepository extends JpaRepository<Jwt, Long> {
     @Query("SELECT j FROM Jwt j WHERE j.user.id = :idUser")
     List<Jwt> findAllTokenForThisIdUser(@Param("idUser") Long idUser);
 
-    //TODO: A faire
     void deleteAllByExpiredAndDisable(boolean expired, boolean disable);
 
     Optional<Jwt> findByRefreshTokenValue(String refreshTokenRequest);

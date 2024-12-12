@@ -22,20 +22,18 @@ import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 public class AdviceController {
 
     @ResponseStatus(BAD_REQUEST)
+    @ExceptionHandler({Exception.class})
+    public @ResponseBody void handleException(Exception ex) {}
+
+    @ResponseStatus(BAD_REQUEST)
     @ExceptionHandler({MissingParameterException.class})
     public @ResponseBody ErrorDto handleException(MissingParameterException ex) {
         return new ErrorDto(BAD_REQUEST.toString(), ex.getMessage());
     }
 
-    //FIXME A voir si je garde car ça expose les règles de la BDD au client,
-    // qui pourrait connaitre des email déjà présent en BDD par exemple
-    // Mettre une erreur générique SI erreur dans register ou login (Invalid Credentials)
-    // Fait pour login avec BadCredentials
     @ResponseStatus(BAD_REQUEST)
     @ExceptionHandler({DataIntegrityViolationException.class})
-    public @ResponseBody ErrorDto handleDatabaseException(DataIntegrityViolationException ex) {
-        return new ErrorDto(BAD_REQUEST.toString(), ex.getMessage());
-    }
+    public @ResponseBody void handleDatabaseException(DataIntegrityViolationException ex) {}
 
     @ResponseStatus(BAD_REQUEST)
     @ExceptionHandler({MethodArgumentNotValidException.class})
@@ -61,6 +59,5 @@ public class AdviceController {
     public @ResponseBody ErrorDto handleBadCredentialsException(BadCredentialsException ex) {
         return new ErrorDto(UNAUTHORIZED.toString(), ex.getMessage());
     }
-
 
 }

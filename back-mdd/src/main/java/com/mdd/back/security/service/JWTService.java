@@ -11,11 +11,15 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Key;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
@@ -26,12 +30,12 @@ import java.util.function.Function;
 import static io.jsonwebtoken.Claims.EXPIRATION;
 import static io.jsonwebtoken.Claims.SUBJECT;
 
+@Slf4j
 @Service
 public class JWTService {
     public static final String REFRESH = "refresh";
-    private static final int NB_MINUTES = 30;
-    private final int SOIXANTE_SECONDES = 60;
-    private final int MILLE_MILLISECONDES = 1000;
+    Instant now = Instant.now();
+    Instant expirationTime = now.plus(Duration.ofHours(1)); //1h
     public static final String BEARER = "bearer";
 
     private final UserService userService;
@@ -49,7 +53,6 @@ public class JWTService {
         User user = userService.loadUserByUsername(email);
         this.disableExistingTokens(user.getId());
         Map<String, String> jwtMap = new java.util.HashMap<>(this.generateJwt(user));
-        Instant now = Instant.now();
         Jwt jwt = Jwt.builder()
                 .bearer(jwtMap.get(BEARER))
                 .user(user)
@@ -58,7 +61,7 @@ public class JWTService {
                 .refreshToken(RefreshToken.builder()
                         .value(UUID.randomUUID().toString())
                         .creation(now)
-                        .expiration(now.plusMillis(NB_MINUTES * SOIXANTE_SECONDES * MILLE_MILLISECONDES))
+                        .expiration(expirationTime)
                         .expired(false)
                         .build())
                 .build();
@@ -68,7 +71,6 @@ public class JWTService {
         return jwtMap;
     }
 
-    //TODO: A Verifier
     public Map<String, String> createRefreshToken(RefreshTokenDto refreshTokenDto) {
         Jwt jwt = this.jwtRepository.findByRefreshTokenValue(refreshTokenDto.refreshToken()).orElseThrow(() -> new RuntimeException("Token invalide"));
         if (jwt.getRefreshToken().isExpired() || jwt.getRefreshToken().getExpiration().isBefore(Instant.now())) {
@@ -80,7 +82,6 @@ public class JWTService {
         return this.generate(user.getEmail());
     }
 
-    //TODO: A vérifier (createRefreshToken)
     private void disableExistingTokens(Long idUser) {
         final List<Jwt> jwtList = this.jwtRepository.findAllTokenForThisIdUser(idUser);
         jwtList.forEach(
@@ -93,19 +94,16 @@ public class JWTService {
     }
 
     private Map<String, String> generateJwt(User user) {
-        final long currentTimeMillis = System.currentTimeMillis();
-        final long expirationTime = currentTimeMillis + NB_MINUTES * SOIXANTE_SECONDES * MILLE_MILLISECONDES;
 
         Map<String, Object> claims = Map.of(
                 "username", user.getUsername(),
                 SUBJECT, user.getEmail(),
-                EXPIRATION, new Date(expirationTime)
+                EXPIRATION, Date.from(expirationTime)
         );
 
-        //FIXME: corriger ce qui est déprecated
         String bearer = Jwts.builder()
-                .issuedAt(new Date(currentTimeMillis))
-                .expiration(new Date(expirationTime))
+                .issuedAt(Date.from(now))
+                .expiration(Date.from(expirationTime))
                 .subject(user.getEmail())
                 .claims(claims)
                 .signWith(getKey(), SignatureAlgorithm.HS256)
@@ -132,7 +130,6 @@ public class JWTService {
         return function.apply(claims);
     }
 
-    //FIXME: corriger ce qui est déprecated
     private Claims getAllClaimsFromToken(String token) {
         return Jwts.parser()
                 .setSigningKey(this.getKey())
@@ -155,6 +152,13 @@ public class JWTService {
         tokenPresentInBDD.setDisable(true);
 
         jwtRepository.save(tokenPresentInBDD);
+    }
+
+    @Scheduled(cron = "0 */2 * * * *")
+    @Transactional
+    public void pruneExpiredTokens() {
+        log.info("Pruning expired tokens à {}", Instant.now());
+        this.jwtRepository.deleteAllByExpiredAndDisable(true, true);
     }
 
 

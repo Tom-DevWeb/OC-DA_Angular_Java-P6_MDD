@@ -49,7 +49,6 @@ public class UserController {
         userService.findById(id);
     }
 
-    //TODO: A faire
     @PostMapping("/refresh-token")
     public @ResponseBody Map<String, String> refreshToken(@Valid @RequestBody RefreshTokenDto refreshTokenDto) {
         return jwtService.createRefreshToken(refreshTokenDto);
