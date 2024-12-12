@@ -1,5 +1,6 @@
 package com.mdd.back.controllers;
 
+import com.mdd.back.dto.UserDto;
 import com.mdd.back.dto.requests.LoginRequestDto;
 import com.mdd.back.dto.requests.RegisterRequestDto;
 import com.mdd.back.security.dto.RefreshTokenDto;
@@ -43,10 +44,9 @@ public class UserController {
         userService.register(registerRequestDto);
     }
 
-    //TODO: A faire
     @GetMapping("/{id}")
-    public void findById(@PathVariable Long id) {
-        userService.findById(id);
+    public UserDto findById(@PathVariable Long id) {
+        return userService.getUserById(id);
     }
 
     @PostMapping("/refresh-token")

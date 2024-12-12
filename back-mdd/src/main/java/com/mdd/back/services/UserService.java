@@ -1,5 +1,6 @@
 package com.mdd.back.services;
 
+import com.mdd.back.dto.UserDto;
 import com.mdd.back.dto.requests.RegisterRequestDto;
 import com.mdd.back.entities.User;
 import com.mdd.back.repositories.UserRepository;
@@ -30,11 +31,15 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
     }
 
-    //TODO: A faire
-    public void findById(Long userId) {}
+    public UserDto getUserById(Long userId) throws UsernameNotFoundException {
+        User user = this.userRepository.findById(userId)
+                .orElseThrow(() -> new UsernameNotFoundException("Utilisateur non trouvé"));
+
+        return userMapper.toUserDto(user);
+    }
 
     @Override
-    public User loadUserByUsername(String username) throws UsernameNotFoundException {
+    public User loadUserByUsername(String username) throws BadCredentialsException {
         return this.userRepository.findByEmail(username)
                 .orElseThrow(() -> new BadCredentialsException("Mauvaise authentification"));
     }
