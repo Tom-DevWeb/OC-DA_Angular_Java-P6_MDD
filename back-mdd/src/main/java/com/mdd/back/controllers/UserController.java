@@ -2,6 +2,7 @@ package com.mdd.back.controllers;
 
 import com.mdd.back.dto.UserDto;
 import com.mdd.back.dto.requests.LoginRequestDto;
+import com.mdd.back.dto.requests.ModifyUserRequestDto;
 import com.mdd.back.dto.requests.RegisterRequestDto;
 import com.mdd.back.security.dto.RefreshTokenDto;
 import com.mdd.back.security.service.JWTService;
@@ -64,7 +65,15 @@ public class UserController {
         return userService.getUserByEmail(email);
     }
 
-    //TODO: A faire
+    @PutMapping("")
+    public void modifyUser(@Valid @RequestBody ModifyUserRequestDto modifyUserRequestDto) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        String email = authentication.getName();
+
+        userService.modifyUser(email, modifyUserRequestDto);
+    }
+
     @PostMapping("/disconnect")
     public void disconnect() {
         jwtService.disconnect();

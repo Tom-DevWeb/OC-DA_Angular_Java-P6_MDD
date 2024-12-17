@@ -1,6 +1,7 @@
 package com.mdd.back.services;
 
 import com.mdd.back.dto.UserDto;
+import com.mdd.back.dto.requests.ModifyUserRequestDto;
 import com.mdd.back.dto.requests.RegisterRequestDto;
 import com.mdd.back.entities.User;
 import com.mdd.back.repositories.UserRepository;
@@ -43,6 +44,25 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("Utilisateur non trouvé"));
 
         return userMapper.toUserDto(user);
+    }
+
+    public void modifyUser(String email, ModifyUserRequestDto userDto) {
+        User user = this.userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("Utilisateur non trouvé"));
+
+        if (userDto.getEmail() != null && !userDto.getEmail().isBlank()) {
+            boolean emailExists = userRepository.findByEmail(userDto.getEmail())
+                    .filter(existingUser -> !existingUser.getId().equals(user.getId()))
+                    .isPresent();
+
+            if (emailExists) {
+                throw new IllegalArgumentException("Cet email est déjà utilisé par un autre utilisateur.");
+            }
+        }
+
+        userMapper.updateUserFromDto(userDto, user);
+
+        userRepository.save(user);
     }
 
     @Override
