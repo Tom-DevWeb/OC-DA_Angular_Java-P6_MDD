@@ -1,4 +1,4 @@
-package com.mdd.back.security.mapper;
+package com.mdd.back.mapper;
 
 import com.mdd.back.dto.UserDto;
 import com.mdd.back.dto.requests.RegisterRequestDto;

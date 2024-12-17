@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -52,6 +53,15 @@ public class UserController {
     @PostMapping("/refresh-token")
     public @ResponseBody Map<String, String> refreshToken(@Valid @RequestBody RefreshTokenDto refreshTokenDto) {
         return jwtService.createRefreshToken(refreshTokenDto);
+    }
+
+    @GetMapping("/me")
+    public UserDto findMe() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        String email = authentication.getName();
+
+        return userService.getUserByEmail(email);
     }
 
     //TODO: A faire

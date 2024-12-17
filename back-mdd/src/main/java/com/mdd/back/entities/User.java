@@ -38,6 +38,11 @@ public class User implements UserDetails {
     private LocalDateTime updatedAt;
 
     @Override
+    public String getUsername() {
+        return this.email;
+    }
+
+    @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of();
     }

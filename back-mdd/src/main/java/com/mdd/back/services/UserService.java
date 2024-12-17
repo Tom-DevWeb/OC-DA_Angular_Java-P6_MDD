@@ -4,7 +4,7 @@ import com.mdd.back.dto.UserDto;
 import com.mdd.back.dto.requests.RegisterRequestDto;
 import com.mdd.back.entities.User;
 import com.mdd.back.repositories.UserRepository;
-import com.mdd.back.security.mapper.UserMapper;
+import com.mdd.back.mapper.UserMapper;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -33,6 +33,13 @@ public class UserService implements UserDetailsService {
 
     public UserDto getUserById(Long userId) throws UsernameNotFoundException {
         User user = this.userRepository.findById(userId)
+                .orElseThrow(() -> new UsernameNotFoundException("Utilisateur non trouvé"));
+
+        return userMapper.toUserDto(user);
+    }
+
+    public UserDto getUserByEmail(String email) throws UsernameNotFoundException {
+        User user = this.userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("Utilisateur non trouvé"));
 
         return userMapper.toUserDto(user);
