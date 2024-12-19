@@ -34,9 +34,9 @@ import static io.jsonwebtoken.Claims.SUBJECT;
 @Service
 public class JWTService {
     public static final String REFRESH = "refresh";
-    Instant now = Instant.now();
-    Instant expirationTime = now.plus(Duration.ofHours(1)); //1h
     public static final String BEARER = "bearer";
+
+    private static final int expirationTime = 60 * 60 * 1000; //60 minutes
 
     private final UserService userService;
     private final JwtRepository jwtRepository;
@@ -53,6 +53,7 @@ public class JWTService {
         User user = userService.loadUserByUsername(email);
         this.disableExistingTokens(user.getId());
         Map<String, String> jwtMap = new java.util.HashMap<>(this.generateJwt(user));
+        Instant now = Instant.now();
         Jwt jwt = Jwt.builder()
                 .bearer(jwtMap.get(BEARER))
                 .user(user)
@@ -61,7 +62,7 @@ public class JWTService {
                 .refreshToken(RefreshToken.builder()
                         .value(UUID.randomUUID().toString())
                         .creation(now)
-                        .expiration(expirationTime)
+                        .expiration(now.plusMillis(expirationTime))
                         .expired(false)
                         .build())
                 .build();
@@ -94,16 +95,18 @@ public class JWTService {
     }
 
     private Map<String, String> generateJwt(User user) {
+        final long currentTimeMillis = System.currentTimeMillis();
+        final long expirationTimeMillis = currentTimeMillis + expirationTime;
 
         Map<String, Object> claims = Map.of(
                 "username", user.getUsername(),
                 SUBJECT, user.getEmail(),
-                EXPIRATION, Date.from(expirationTime)
+                EXPIRATION, new Date(expirationTimeMillis)
         );
 
         String bearer = Jwts.builder()
-                .issuedAt(Date.from(now))
-                .expiration(Date.from(expirationTime))
+                .issuedAt(new Date(currentTimeMillis))
+                .expiration(new Date(expirationTimeMillis))
                 .subject(user.getEmail())
                 .claims(claims)
                 .signWith(getKey(), SignatureAlgorithm.HS256)

@@ -11,7 +11,7 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface CommentMapper {
 
-    @Mapping(source = "author.username", target = "authorUsername")
+    @Mapping(source = "author.realUsername", target = "authorUsername")
     CommentResponseDto commentsToCommentResponseDto(Comment comment);
 
     List<CommentResponseDto> commentsToCommentsResponseDto(List<Comment> comments);
