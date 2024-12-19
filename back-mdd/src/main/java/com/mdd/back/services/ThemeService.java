@@ -1,6 +1,7 @@
 package com.mdd.back.services;
 
 import com.mdd.back.dto.responses.ThemeResponseDto;
+import com.mdd.back.dto.responses.ThemesUserResponseDto;
 import com.mdd.back.entities.Theme;
 import com.mdd.back.entities.ThemeSubscription;
 import com.mdd.back.entities.ThemeSubscriptionId;
@@ -65,5 +66,11 @@ public class ThemeService {
                 .orElseThrow(() -> new RuntimeException("Theme subscription not found"));
 
         themeSubscriptionRepository.delete(themeSubscription);
+    }
+
+    public List<ThemesUserResponseDto> getThemesUser(Long userId) {
+        List<ThemeSubscription> subscriptions = themeSubscriptionRepository.findById_User(userId);
+
+        return themeMapper.themesToThemesUserResponseDto(subscriptions);
     }
 }
