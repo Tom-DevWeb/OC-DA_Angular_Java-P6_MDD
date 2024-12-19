@@ -1,5 +1,6 @@
 package com.mdd.back.mapper;
 
+import com.mdd.back.dto.requests.ArticleRequestDto;
 import com.mdd.back.dto.responses.ArticleResponseDto;
 import com.mdd.back.entities.Article;
 import org.mapstruct.Mapper;
@@ -12,4 +13,6 @@ public interface ArticleMapper {
     ArticleResponseDto articleToArticleResponseDto(Article article);
 
     List<ArticleResponseDto> articleToArticleResponseDtoList(List<Article> articles);
+
+    Article articleRequestDtoToArticle(ArticleRequestDto articleRequestDto);
 }

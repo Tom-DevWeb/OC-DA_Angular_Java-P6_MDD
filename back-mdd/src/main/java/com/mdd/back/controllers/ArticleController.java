@@ -1,11 +1,12 @@
 package com.mdd.back.controllers;
 
+import com.mdd.back.dto.requests.ArticleRequestDto;
+import com.mdd.back.dto.requests.CommentRequestDto;
+import com.mdd.back.dto.responses.CommentResponseDto;
 import com.mdd.back.dto.responses.ArticleResponseDto;
 import com.mdd.back.services.ArticleService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,4 +29,24 @@ public class ArticleController {
     public ArticleResponseDto getArticleById(@PathVariable Long id) {
         return articleService.getArticleById(id);
     }
+
+    @PostMapping("")
+    public void createArticle(@Valid @RequestBody ArticleRequestDto articleRequestDto) {
+        articleService.createArticle(articleRequestDto);
+    }
+
+    @GetMapping("/{id}/comments")
+    public List<CommentResponseDto> getArticleComments(@PathVariable Long id) {
+        return articleService.getArticleComments(id);
+    }
+
+    @PostMapping("/{id}/comments")
+    public void createArticleComment(
+            @PathVariable Long id,
+            @Valid @RequestBody CommentRequestDto commentRequestDto
+    ) {
+        articleService.createArticleComment(id, commentRequestDto);
+
+    }
+
 }
