@@ -3,6 +3,7 @@ package com.mdd.back.controllers;
 import com.mdd.back.dto.responses.ArticleResponseDto;
 import com.mdd.back.services.ArticleService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,5 +22,10 @@ public class ArticleController {
     @GetMapping("")
     public List<ArticleResponseDto> getAllArticles() {
         return articleService.getAllArticles();
+    }
+
+    @GetMapping("/{id}")
+    public ArticleResponseDto getArticleById(@PathVariable Long id) {
+        return articleService.getArticleById(id);
     }
 }

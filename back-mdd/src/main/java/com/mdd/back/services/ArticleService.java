@@ -24,4 +24,14 @@ public class ArticleService {
 
         return articleMapper.articleToArticleResponseDtoList(articles);
     }
+
+    public ArticleResponseDto getArticleById(Long id) {
+
+        Article article = articleRepository.findById(id).orElseThrow(
+                () -> new IllegalArgumentException("Article not found")
+        );
+
+
+        return articleMapper.articleToArticleResponseDto(article);
+    }
 }

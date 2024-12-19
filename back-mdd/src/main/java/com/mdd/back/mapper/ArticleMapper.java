@@ -9,7 +9,7 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface ArticleMapper {
 
-    //ArticleResponseDto articleToArticleResponseDto(Article article);
+    ArticleResponseDto articleToArticleResponseDto(Article article);
 
     List<ArticleResponseDto> articleToArticleResponseDtoList(List<Article> articles);
 }
