@@ -2,12 +2,10 @@ package com.mdd.back.controllers;
 
 import com.mdd.back.TestcontainersConfiguration;
 import com.mdd.back.entities.Article;
+import com.mdd.back.entities.Comment;
 import com.mdd.back.entities.Theme;
 import com.mdd.back.entities.User;
-import com.mdd.back.repositories.ArticleRepository;
-import com.mdd.back.repositories.CommentRepository;
-import com.mdd.back.repositories.ThemeRepository;
-import com.mdd.back.repositories.UserRepository;
+import com.mdd.back.repositories.*;
 import com.mdd.back.stubs.ArticleStub;
 import com.mdd.back.stubs.ThemeStub;
 import com.mdd.back.stubs.UserStub;
@@ -19,24 +17,19 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
-import javax.sql.DataSource;
-import java.sql.Connection;
+import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-@Testcontainers
 @Import(TestcontainersConfiguration.class)
-@ActiveProfiles("test")
 public class ArticleControllerIntegTest {
-/*
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -49,6 +42,8 @@ public class ArticleControllerIntegTest {
     private UserRepository userRepository;
     @Autowired
     private ThemeRepository themeRepository;
+    @Autowired
+    private ThemeSubscriptionRepository themeSubscriptionRepository;
 
 
     @BeforeEach
@@ -58,6 +53,7 @@ public class ArticleControllerIntegTest {
         articleRepository.deleteAll();
         userRepository.deleteAll();
         themeRepository.deleteAll();
+        themeSubscriptionRepository.deleteAll();
 
         // Ajouter des données de test dans l'ordre correct
         User user = UserStub.getDefaultUser();
@@ -68,19 +64,9 @@ public class ArticleControllerIntegTest {
 
         // Créer un article avec les entités User et Theme déjà persistées
         Article article = ArticleStub.getDefaultArticle();
-        article.setAuthor(user);  // Associer l'utilisateur déjà persisté
-        article.setTheme(theme);   // Associer le thème déjà persisté
+        article.setAuthor(user);
+        article.setTheme(theme);
         articleRepository.save(article);
-    }
-
-    @Autowired
-    private DataSource dataSource;
-
-    @Test
-    void testDatabaseConnection() throws Exception {
-        try (Connection connection = dataSource.getConnection()) {
-            assertNotNull(connection, "The database connection should not be null.");
-        }
     }
 
     @Test
@@ -107,5 +93,72 @@ public class ArticleControllerIntegTest {
                 .andExpect(jsonPath("$.content").value("This is the default article content."));
     }
 
-     */
+    @Test
+    @WithMockUser
+    public void testCreateArticle() throws Exception {
+        Long userId = userRepository.findAll().getFirst().getId();
+        Long themeId = themeRepository.findAll().getFirst().getId();
+
+        String newArticleJson = String.format("""
+        {
+            "title": "New Article",
+            "content": "This is the content of the new article.",
+            "author": {
+                "id": %d
+            },
+            "theme": {
+                "id": %d
+            }
+        }
+    """, userId, themeId);
+
+        mockMvc.perform(post("/articles")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(newArticleJson))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser
+    public void testGetArticleComments() throws Exception {
+        Article article = articleRepository.findAll().stream().findFirst().orElseThrow();
+        Long articleId = article.getId();
+
+        mockMvc.perform(get("/articles/{id}/comments", articleId))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$.length()").value(0));
+    }
+
+    @Test
+    @WithMockUser
+    public void testCreateArticleComment() throws Exception {
+        Article article = articleRepository.findAll().stream().findFirst().orElseThrow();
+        Long articleId = article.getId();
+
+        User user = userRepository.findAll().stream().findFirst().orElseThrow();
+        Long userId = user.getId();
+
+        String newCommentJson = String.format("""
+        {
+            "content": "This is a new comment.",
+            "author": {
+                "id": %d
+            }
+        }""", userId);
+
+        mockMvc.perform(post("/articles/{id}/comments", articleId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(newCommentJson))
+                .andExpect(status().isOk());
+
+        // Vérifier que le commentaire a été créé
+        List<Comment> comments = commentRepository.findAll();
+        assertEquals(1, comments.size());
+        assertEquals("This is a new comment.", comments.getFirst().getContent());
+    }
+
+
+
 }

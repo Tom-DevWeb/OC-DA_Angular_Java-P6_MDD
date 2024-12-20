@@ -2,11 +2,9 @@ package com.mdd.back.dto.requests;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
-@AllArgsConstructor
 public class LoginRequestDto {
 
     @Email(message = "L'email doit être valide")

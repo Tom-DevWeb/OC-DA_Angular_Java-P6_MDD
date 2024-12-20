@@ -1,6 +1,6 @@
 package com.mdd.back.services;
 
-import com.mdd.back.dto.UserDto;
+import com.mdd.back.dto.responses.UserResponseDto;
 import com.mdd.back.dto.requests.ModifyUserRequestDto;
 import com.mdd.back.dto.requests.RegisterRequestDto;
 import com.mdd.back.entities.User;
@@ -32,14 +32,14 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
     }
 
-    public UserDto getUserById(Long userId) throws UsernameNotFoundException {
+    public UserResponseDto getUserById(Long userId) throws UsernameNotFoundException {
         User user = this.userRepository.findById(userId)
                 .orElseThrow(() -> new UsernameNotFoundException("Utilisateur non trouvé"));
 
         return userMapper.toUserDto(user);
     }
 
-    public UserDto getUserByEmail(String email) throws UsernameNotFoundException {
+    public UserResponseDto getUserByEmail(String email) throws UsernameNotFoundException {
         User user = this.userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("Utilisateur non trouvé"));
 

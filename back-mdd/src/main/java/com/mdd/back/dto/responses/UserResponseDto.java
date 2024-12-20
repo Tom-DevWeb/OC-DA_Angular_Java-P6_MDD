@@ -1,11 +1,11 @@
-package com.mdd.back.dto;
+package com.mdd.back.dto.responses;
 
 import lombok.Data;
 
 import java.time.LocalDateTime;
 
 @Data
-public class UserDto {
+public class UserResponseDto {
 
     private Long id;
     private String username;

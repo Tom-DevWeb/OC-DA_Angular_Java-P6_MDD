@@ -15,4 +15,13 @@ public class ThemeSubscriptionId implements Serializable {
 
     @Column(name = "user_id")
     private Long user;
+
+
+    public ThemeSubscriptionId() {
+    }
+
+    public ThemeSubscriptionId(Long theme, Long user) {
+        this.theme = theme;
+        this.user = user;
+    }
 }

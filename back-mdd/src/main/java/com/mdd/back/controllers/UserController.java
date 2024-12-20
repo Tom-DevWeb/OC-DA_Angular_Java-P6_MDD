@@ -1,6 +1,6 @@
 package com.mdd.back.controllers;
 
-import com.mdd.back.dto.UserDto;
+import com.mdd.back.dto.responses.UserResponseDto;
 import com.mdd.back.dto.requests.LoginRequestDto;
 import com.mdd.back.dto.requests.ModifyUserRequestDto;
 import com.mdd.back.dto.requests.RegisterRequestDto;
@@ -52,7 +52,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public UserDto findById(@PathVariable Long id) {
+    public UserResponseDto findById(@PathVariable Long id) {
         return userService.getUserById(id);
     }
 
@@ -62,7 +62,7 @@ public class UserController {
     }
 
     @GetMapping("/me")
-    public UserDto findMe() {
+    public UserResponseDto findMe() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         String email = authentication.getName();

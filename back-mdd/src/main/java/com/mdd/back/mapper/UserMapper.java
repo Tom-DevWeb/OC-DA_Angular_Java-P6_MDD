@@ -1,6 +1,6 @@
 package com.mdd.back.mapper;
 
-import com.mdd.back.dto.UserDto;
+import com.mdd.back.dto.responses.UserResponseDto;
 import com.mdd.back.dto.requests.ModifyUserRequestDto;
 import com.mdd.back.dto.requests.RegisterRequestDto;
 import com.mdd.back.entities.User;
@@ -12,7 +12,7 @@ public interface UserMapper {
 
     User toUser(RegisterRequestDto userDto);
 
-    UserDto toUserDto(User user);
+    UserResponseDto toUserDto(User user);
 
     void updateUserFromDto(ModifyUserRequestDto userDto, @MappingTarget User user);
 
