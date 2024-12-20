@@ -42,18 +42,6 @@ JWT_SECRET_KEY -> clé_privé
 1. Cliquer sur le bouton **play** `Run 'SpringBootSecurityJwtApplication'` dans la barre en haut d'**IntelliJ**.
 2. Soit, vous faites des requêtes depuis postman `resources/postman` ou cloner et démarrer le front-end.
 
-## Démarrer les tests unitaires et d'intégration
+## Tests d'intégration
 
-### TU ou TI
-
-Lancer les tests individuellement depuis les fichiers test présent dans le package `test`
-
-### Test de couverture
-
-Dans la barre en haut d'**IntelliJ**, ajouter une configuration JUnit :
-
-![edit_config_junit.png](../ressources/images/edit_config_junit.png)
-
-Appuyer sur le bouton Cover.
-
-Ou lancer et générer un jacoco code coverage en faisant : `mvn clean test`
+Seulement des tests d'intégration ont été réalisés.
