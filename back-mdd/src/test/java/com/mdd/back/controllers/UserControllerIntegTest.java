@@ -4,6 +4,7 @@ import com.mdd.back.TestcontainersConfiguration;
 import com.mdd.back.entities.Theme;
 import com.mdd.back.entities.ThemeSubscription;
 import com.mdd.back.entities.User;
+import com.mdd.back.repositories.ArticleRepository;
 import com.mdd.back.repositories.ThemeRepository;
 import com.mdd.back.repositories.ThemeSubscriptionRepository;
 import com.mdd.back.repositories.UserRepository;
@@ -49,12 +50,18 @@ public class UserControllerIntegTest {
     private ThemeRepository themeRepository;
     @Autowired
     private ThemeSubscriptionRepository themeSubscriptionRepository;
+    @Autowired
+    private ArticleRepository articleRepository;
 
     @BeforeEach
     public void setUp() {
         // Nettoyer la base de données avant chaque test
-        userRepository.deleteAll();
+        articleRepository.deleteAll();
+        themeRepository.deleteAll();
+        themeSubscriptionRepository.deleteAll();
         jwtRepository.deleteAll();
+
+        userRepository.deleteAll();
 
         String encodedPassword = passwordEncoder.encode(UserStub.getDefaultUser().getPassword());
 
@@ -77,7 +84,7 @@ public class UserControllerIntegTest {
                 }
                 """;
 
-        mockMvc.perform(post("/users/register")
+        mockMvc.perform(post("/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(registerRequestJson))
                 .andExpect(status().isOk());
@@ -113,9 +120,9 @@ public class UserControllerIntegTest {
         mockMvc.perform(get("/users/{id}/themes", user.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", org.hamcrest.Matchers.hasSize(3)))
-                .andExpect(jsonPath("$[0].themeId").value(1))
-                .andExpect(jsonPath("$[1].themeId").value(2))
-                .andExpect(jsonPath("$[2].themeId").value(3));
+                .andExpect(jsonPath("$[0].themeId").value(6))
+                .andExpect(jsonPath("$[1].themeId").value(7))
+                .andExpect(jsonPath("$[2].themeId").value(8));
     }
 
 }

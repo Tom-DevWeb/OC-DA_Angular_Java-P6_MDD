@@ -1,6 +1,7 @@
 package com.mdd.back.security.service;
 
 import com.mdd.back.entities.User;
+import com.mdd.back.security.dto.BearerResponseDto;
 import com.mdd.back.security.dto.RefreshTokenDto;
 import com.mdd.back.security.entities.Jwt;
 import com.mdd.back.security.entities.RefreshToken;
@@ -19,7 +20,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Key;
-import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
@@ -33,8 +33,6 @@ import static io.jsonwebtoken.Claims.SUBJECT;
 @Slf4j
 @Service
 public class JWTService {
-    public static final String REFRESH = "refresh";
-    public static final String BEARER = "bearer";
 
     private static final int expirationTime = 60 * 60 * 1000; //60 minutes
 
@@ -49,13 +47,14 @@ public class JWTService {
         this.jwtRepository = jwtRepository;
     }
 
-    public Map<String, String> generate(String email) {
+    public BearerResponseDto generate(String email) {
         User user = userService.loadUserByUsername(email);
         this.disableExistingTokens(user.getId());
-        Map<String, String> jwtMap = new java.util.HashMap<>(this.generateJwt(user));
+        BearerResponseDto jwtMap = this.generateJwt(user);
+
         Instant now = Instant.now();
         Jwt jwt = Jwt.builder()
-                .bearer(jwtMap.get(BEARER))
+                .bearer(jwtMap.bearer())
                 .user(user)
                 .expired(false)
                 .disable(false)
@@ -68,11 +67,10 @@ public class JWTService {
                 .build();
 
         jwtRepository.save(jwt);
-        jwtMap.put(REFRESH, jwt.getRefreshToken().getValue());
-        return jwtMap;
+        return new BearerResponseDto(jwt.getBearer(), jwt.getRefreshToken().getValue());
     }
 
-    public Map<String, String> createRefreshToken(RefreshTokenDto refreshTokenDto) {
+    public BearerResponseDto createRefreshToken(RefreshTokenDto refreshTokenDto) {
         Jwt jwt = this.jwtRepository.findByRefreshTokenValue(refreshTokenDto.refreshToken()).orElseThrow(() -> new RuntimeException("Token invalide"));
         if (jwt.getRefreshToken().isExpired() || jwt.getRefreshToken().getExpiration().isBefore(Instant.now())) {
             throw new RuntimeException("Token expiré");
@@ -94,7 +92,7 @@ public class JWTService {
         this.jwtRepository.saveAll(jwtList);
     }
 
-    private Map<String, String> generateJwt(User user) {
+    private BearerResponseDto generateJwt(User user) {
         final long currentTimeMillis = System.currentTimeMillis();
         final long expirationTimeMillis = currentTimeMillis + expirationTime;
 
@@ -111,7 +109,7 @@ public class JWTService {
                 .claims(claims)
                 .signWith(getKey(), SignatureAlgorithm.HS256)
                 .compact();
-        return Map.of(BEARER, bearer);
+        return new BearerResponseDto(bearer, null);
     }
 
     private Key getKey() {

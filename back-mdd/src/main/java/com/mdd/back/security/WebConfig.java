@@ -37,9 +37,9 @@ public class WebConfig {
                         authorizationManagerRequestMatcherRegistry -> {
                             AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry
                                     authorizationManagerRequestMatcherRegistry1 = authorizationManagerRequestMatcherRegistry
-                                    .requestMatchers(POST, "/users/register").permitAll()
-                                    .requestMatchers(POST, "/users/login").permitAll()
-                                    .requestMatchers(POST, "/users/refresh-token").permitAll();
+                                    .requestMatchers(POST, "/auth/register").permitAll()
+                                    .requestMatchers(POST, "/auth/login").permitAll()
+                                    .requestMatchers(POST, "/auth/refresh-token").permitAll();
 
                                     authorizationManagerRequestMatcherRegistry1.anyRequest().authenticated();
                         }
