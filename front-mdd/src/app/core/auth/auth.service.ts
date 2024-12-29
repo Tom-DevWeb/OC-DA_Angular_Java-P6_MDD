@@ -15,4 +15,8 @@ export class AuthService {
   login(email: string, password: string): Observable<HttpResponse<BearerResponse>> {
     return this.http.post<HttpResponse<BearerResponse>>(`${this.baseUrl}/login`, {email, password})
   }
+
+  register(email: string, password: string, username: string) {
+    return this.http.post(`${this.baseUrl}/register`, {email, password, username})
+  }
 }
