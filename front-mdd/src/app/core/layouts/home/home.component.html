@@ -1,0 +1,10 @@
+<main class="flex-column align-content-center h-full">
+  <header class="flex justify-content-center -mt-8">
+    <p-image src="/images/mdd_logo_large.svg" class="hidden sm:block"/>
+    <p-image src="/images/mdd_logo_small.svg" class="block sm:hidden"/>
+  </header>
+  <div class="flex flex-column mt-5 sm:m-0 sm:flex-row justify-content-center align-items-center gap-6">
+    <p-button label="Connexion" styleClass="p-button-accent" [routerLink]="'/auth/login'" outlined/>
+    <p-button label="Inscription" styleClass="p-button-accent" [routerLink]="'/auth/register'" outlined/>
+  </div>
+</main>
