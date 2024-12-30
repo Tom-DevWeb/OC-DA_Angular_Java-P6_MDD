@@ -7,14 +7,15 @@ import {BearerResponse} from '../models/bearerResponse';
 })
 export class TokenService {
 
-  private currentUserSubject: BehaviorSubject<any>
+  private currentUserSubject: BehaviorSubject<boolean>
   public currentUser$: Observable<boolean>
 
   private bearerTokenKey: string = 'bearerToken'
   private refreshTokenKey: string = 'refreshToken'
 
   constructor() {
-    this.currentUserSubject = new BehaviorSubject<boolean>(false)
+    const isAuthenticated = !!this.getBearerToken()
+    this.currentUserSubject = new BehaviorSubject<boolean>(isAuthenticated)
     this.currentUser$ = this.currentUserSubject.asObservable()
   }
 
