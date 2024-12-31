@@ -36,6 +36,7 @@ export class TokenInterceptor implements HttpInterceptor {
   }
 
   private addToken(req: HttpRequest<any>, token: string) {
+    console.log("TokenInterceptor")
     return req.clone({
       setHeaders: {
         Authorization: `Bearer ${token}`
@@ -43,9 +44,11 @@ export class TokenInterceptor implements HttpInterceptor {
     })
   }
 
-  private handle401Error(req: HttpRequest<any>, next: HttpHandler) {
+  //FIXME Erreur sur la gestion du refresh token et de son utilisation
+  private handle401Error(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (this.tokenService.getRefreshToken() === null) {
-      return this.router.navigate(['/login']);
+      this.router.navigate(['/login']);
+      return throwError(() => new Error("Refresh token is missing"))
     } else if (!this.isRefreshing) {
       this.isRefreshing = true;
       this.refreshTokenSubject.next(null);
@@ -54,18 +57,21 @@ export class TokenInterceptor implements HttpInterceptor {
       let refreshToken: string = <string>this.tokenService.getRefreshToken();
       return this.authService.refreshToken(refreshToken).pipe(
         switchMap((user: any) => {
+          console.log("Refresh token is refreshed");
           this.isRefreshing = false
           this.refreshTokenSubject.next(user.accessToken)
           return next.handle(this.addToken(req, user.accessToken));
         }
       ),
         catchError((err) => {
+          console.log("Refresh token isn't refreshed");
           this.isRefreshing = false
           this.authService.disconnect()
           return throwError(err);
         })
       )
     } else {
+      console.log("Refresh token else");
       return this.refreshTokenSubject.pipe(
         filter(token => token != null),
         take(1),

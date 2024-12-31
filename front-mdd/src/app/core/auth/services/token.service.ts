@@ -20,7 +20,6 @@ export class TokenService {
   }
 
   setTokens(tokens: BearerResponse) {
-    console.log(tokens)
     localStorage.setItem(this.refreshTokenKey, JSON.stringify(tokens.refresh))
     sessionStorage.setItem(this.bearerTokenKey, JSON.stringify(tokens.bearer))
     this.currentUserSubject.next(true)

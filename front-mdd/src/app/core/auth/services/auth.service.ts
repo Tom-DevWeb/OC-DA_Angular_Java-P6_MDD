@@ -3,6 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {BearerResponse} from '../models/bearerResponse';
 import {LoginRequest} from '../models/loginRequest';
+import {UserResponse} from '../models/userResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +27,10 @@ export class AuthService {
 
   refreshToken(refreshToken: string) {
     return this.http.post(`${this.baseUrl}/refresh-token`, {refreshToken})
+  }
+
+  authMe(): Observable<UserResponse> {
+    return this.http.get<UserResponse>(`${this.baseUrl}/me`)
   }
 
   disconnect() {
