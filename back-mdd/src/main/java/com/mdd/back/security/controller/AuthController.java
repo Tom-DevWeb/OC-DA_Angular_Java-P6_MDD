@@ -28,6 +28,7 @@ public class AuthController {
         this.userService = userService;
     }
 
+    //TODO: Possibilité de se connecter avec email ou nom d'utilisateur
     @PostMapping("/login")
     public BearerResponseDto login(@Valid @RequestBody LoginRequestDto loginRequestDto) {
         final Authentication authentication = authenticationManager.authenticate(
