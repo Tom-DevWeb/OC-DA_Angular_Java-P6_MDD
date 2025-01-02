@@ -1,12 +1,12 @@
-<form [formGroup]="formGroup" (ngSubmit)="onLogin()" class="flex flex-column gap-6">
-  <h1 class="font-normal text-2xl">Se connecter</h1>
-  <p-floatlabel>
-    <input class="" formControlName="email" id="email" pInputText>
+<form [formGroup]="formGroup" (ngSubmit)="onLogin()" class="flex flex-column gap-4">
+  <h1 class="font-normal text-2xl text-center">Se connecter</h1>
+  <div class="flex flex-column gap-2">
     <label for="email">E-mail ou nom d'utilisateur</label>
-  </p-floatlabel>
-  <p-floatlabel>
-    <input class="" formControlName="password" id="password" pInputText>
+    <input pInputText formControlName="email" id="email">
+  </div>
+  <div class="flex flex-column gap-2">
     <label for="password">Mot de passe</label>
-  </p-floatlabel>
-  <p-button label="Se connecter" type="submit" [disabled]="formGroup.invalid"/>
+    <p-password formControlName="password" inputId="password" [toggleMask]="true" [feedback]="false"/>
+  </div>
+  <p-button class="mx-auto" label="Se connecter" type="submit" [disabled]="formGroup.invalid"/>
 </form>

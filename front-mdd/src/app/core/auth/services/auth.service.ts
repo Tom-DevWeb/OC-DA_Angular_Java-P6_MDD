@@ -4,6 +4,7 @@ import {Observable} from 'rxjs';
 import {BearerResponse} from '../models/bearerResponse';
 import {LoginRequest} from '../models/loginRequest';
 import {UserResponse} from '../models/userResponse';
+import {RegisterRequest} from '../models/registerRequest';
 
 @Injectable({
   providedIn: 'root'
@@ -21,8 +22,8 @@ export class AuthService {
     return this.http.post<BearerResponse>(`${this.baseUrl}/login`, loginRequest)
   }
 
-  register(email: string, password: string, username: string) {
-    return this.http.post(`${this.baseUrl}/register`, {email, password, username})
+  register(registerRequest: RegisterRequest): Observable<BearerResponse> {
+    return this.http.post<BearerResponse>(`${this.baseUrl}/register`, registerRequest)
   }
 
   refreshToken(refreshToken: string) {

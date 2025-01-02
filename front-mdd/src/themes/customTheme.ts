@@ -49,6 +49,9 @@ export const customTheme = definePreset(Material, {
         }
       },
       css: ({ dt }: { dt: (key: string) => string }) => `
+       .p-button-accent-color {
+            color: ${dt('button.accent.inverseColor')};
+       }
         .p-button-accent {
             border-color: ${dt('accent.color')};
             color: ${dt('button.accent.inverseColor')};

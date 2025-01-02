@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {FloatLabel} from 'primeng/floatlabel';
 import {InputText} from 'primeng/inputtext';
 import {LoginRequest} from '../../models/loginRequest';
 import {Button} from 'primeng/button';
@@ -8,14 +7,15 @@ import {AuthService} from '../../services/auth.service';
 import {BearerResponse} from '../../models/bearerResponse';
 import {TokenService} from '../../services/token.service';
 import {Router} from '@angular/router';
+import {Password} from 'primeng/password';
 
 @Component({
   selector: 'app-login',
   imports: [
     ReactiveFormsModule,
-    FloatLabel,
     InputText,
     Button,
+    Password,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'

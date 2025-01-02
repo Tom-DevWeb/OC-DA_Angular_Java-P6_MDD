@@ -1,0 +1,8 @@
+<header class="flex flex-row justify-content-between border-bottom-1 mb-6">
+  <p-image src="/images/mdd_logo.svg" routerLink="/" class="cursor-pointer"/>
+  <ul *ngIf="isLogged$ | async" class="hidden sm:flex gap-2">
+    <li><a routerLink="" routerLinkActive="active" ariaCurrentWhenActive="page">Articles</a></li>
+    <li><a routerLink="">Thèmes</a></li>
+    <li><a routerLink=""><p-avatar icon="pi pi-user" shape="circle"/></a></li>
+  </ul>
+</header>

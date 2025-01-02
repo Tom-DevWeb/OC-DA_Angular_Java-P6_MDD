@@ -1,1 +1,17 @@
-<p>register works!</p>
+<form [formGroup]="formGroup" (ngSubmit)="onRegister()" class="flex flex-column gap-4">
+  <h1 class="font-normal text-2xl text-center">Inscription</h1>
+  <div class="flex flex-column gap-2">
+    <label for="username">Nom d'utilisateur</label>
+    <input pInputText formControlName="username" id="username">
+  </div>
+  <div class="flex flex-column gap-2">
+    <label for="email">E-mail</label>
+    <input pInputText formControlName="email" id="email">
+  </div>
+  <div class="flex flex-column gap-2">
+    <label for="password">Mot de passe</label>
+    <p-password formControlName="password" inputId="password" [toggleMask]="true" [feedback]="false" />
+  </div>
+  <p-message *ngIf="errorMessage" severity="error" variant="simple" size="small">{{errorMessage}}</p-message>
+  <p-button class="mx-auto" label="S'inscrire" type="submit" [disabled]="formGroup.invalid"/>
+</form>
