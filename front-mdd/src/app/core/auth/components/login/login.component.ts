@@ -8,6 +8,8 @@ import {BearerResponse} from '../../models/bearerResponse';
 import {TokenService} from '../../services/token.service';
 import {Router} from '@angular/router';
 import {Password} from 'primeng/password';
+import {Message} from 'primeng/message';
+import {NgIf} from '@angular/common';
 
 @Component({
   selector: 'app-login',
@@ -16,6 +18,8 @@ import {Password} from 'primeng/password';
     InputText,
     Button,
     Password,
+    Message,
+    NgIf,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
@@ -23,6 +27,7 @@ import {Password} from 'primeng/password';
 export class LoginComponent implements OnInit {
 
   formGroup!: FormGroup;
+  errorMessage: string | null = null;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -37,7 +42,7 @@ export class LoginComponent implements OnInit {
 
   initFormControls() {
     this.formGroup = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
+      email: ['', [Validators.required]],
       password: ['', Validators.required],
     })
   }
@@ -55,6 +60,7 @@ export class LoginComponent implements OnInit {
           },
           error: (err) => {
             console.error(err);
+            this.errorMessage = err.message;
           }
         }
       )

@@ -19,7 +19,7 @@ import {NgIf} from '@angular/common';
     Password,
     ReactiveFormsModule,
     Message,
-    NgIf
+    NgIf,
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'

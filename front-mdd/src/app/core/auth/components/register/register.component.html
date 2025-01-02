@@ -1,17 +1,17 @@
-<form [formGroup]="formGroup" (ngSubmit)="onRegister()" class="flex flex-column gap-4">
-  <h1 class="font-normal text-2xl text-center">Inscription</h1>
-  <div class="flex flex-column gap-2">
+<form [formGroup]="formGroup" (ngSubmit)="onRegister()" class="formgrid grid mx-3 md:mx-0 md:w-20rem">
+  <h1 class="font-normal text-2xl text-center col-12 mb-6">Inscription</h1>
+  <div class="field col-12">
     <label for="username">Nom d'utilisateur</label>
-    <input pInputText formControlName="username" id="username">
+    <input pInputText formControlName="username" id="username" class="surface-border w-full">
   </div>
-  <div class="flex flex-column gap-2">
+  <div class="field col-12">
     <label for="email">E-mail</label>
-    <input pInputText formControlName="email" id="email">
+    <input pInputText formControlName="email" id="email" class="surface-border w-full">
   </div>
-  <div class="flex flex-column gap-2">
+  <div class="field col-12">
     <label for="password">Mot de passe</label>
-    <p-password formControlName="password" inputId="password" [toggleMask]="true" [feedback]="false" />
+    <p-password formControlName="password" inputId="password" [toggleMask]="true" [feedback]="false" styleClass="w-full"  inputStyleClass="surface-border w-full"/>
   </div>
-  <p-message *ngIf="errorMessage" severity="error" variant="simple" size="small">{{errorMessage}}</p-message>
+    <p-message *ngIf="errorMessage" severity="error" icon="pi pi-times-circle" styleClass="mb-2" class="p-2 mb-2">{{errorMessage}}</p-message>
   <p-button class="mx-auto" label="S'inscrire" type="submit" [disabled]="formGroup.invalid"/>
 </form>
