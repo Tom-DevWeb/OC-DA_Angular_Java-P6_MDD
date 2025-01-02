@@ -27,6 +27,7 @@ export class TokenInterceptor implements HttpInterceptor {
     return next.handle(req).pipe(
       catchError(err => {
         if (err instanceof HttpErrorResponse && err.status === 401) {
+          this.tokenService.removeBearerToken()
           return this.handle401Error(req, next)
         } else {
           return throwError(err);
@@ -36,7 +37,6 @@ export class TokenInterceptor implements HttpInterceptor {
   }
 
   private addToken(req: HttpRequest<any>, token: string) {
-    console.log("TokenInterceptor")
     return req.clone({
       setHeaders: {
         Authorization: `Bearer ${token}`
@@ -44,10 +44,9 @@ export class TokenInterceptor implements HttpInterceptor {
     })
   }
 
-  //FIXME Erreur sur la gestion du refresh token et de son utilisation
   private handle401Error(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (this.tokenService.getRefreshToken() === null) {
-      this.router.navigate(['/login']);
+      this.router.navigate(['/auth/login'])
       return throwError(() => new Error("Refresh token is missing"))
     } else if (!this.isRefreshing) {
       this.isRefreshing = true;
@@ -57,26 +56,26 @@ export class TokenInterceptor implements HttpInterceptor {
       let refreshToken: string = <string>this.tokenService.getRefreshToken();
       return this.authService.refreshToken(refreshToken).pipe(
         switchMap((user: any) => {
-          console.log("Refresh token is refreshed");
           this.isRefreshing = false
-          this.refreshTokenSubject.next(user.accessToken)
-          return next.handle(this.addToken(req, user.accessToken));
+          this.tokenService.setTokens(user);
+          this.refreshTokenSubject.next(user.bearer)
+          return next.handle(this.addToken(req, user.bearer));
         }
       ),
         catchError((err) => {
-          console.log("Refresh token isn't refreshed");
           this.isRefreshing = false
           this.authService.disconnect()
+          this.router.navigate(['/auth/login'])
           return throwError(err);
         })
       )
     } else {
-      console.log("Refresh token else");
+      //Gère problème de concurence si une autre requête arrive pendant qu'un rafraîchissement est déjà en cours
       return this.refreshTokenSubject.pipe(
         filter(token => token != null),
         take(1),
-        switchMap(accessToken => {
-          return next.handle(this.addToken(req, accessToken))
+        switchMap(bearerToken => {
+          return next.handle(this.addToken(req, bearerToken))
         })
       )
 
