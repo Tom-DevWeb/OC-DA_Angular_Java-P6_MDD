@@ -1,8 +1,8 @@
 package com.mdd.back.services;
 
-import com.mdd.back.dto.responses.UserResponseDto;
 import com.mdd.back.dto.requests.ModifyUserRequestDto;
 import com.mdd.back.dto.requests.RegisterRequestDto;
+import com.mdd.back.dto.responses.UserResponseDto;
 import com.mdd.back.entities.User;
 import com.mdd.back.mapper.UserMapper;
 import com.mdd.back.repositories.UserRepository;
@@ -20,7 +20,10 @@ public class UserService implements UserDetailsService {
     private final UserMapper userMapper;
 
 
-    public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, UserMapper userMapper) {
+    public UserService(
+            UserRepository userRepository,
+            BCryptPasswordEncoder bCryptPasswordEncoder,
+            UserMapper userMapper) {
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.userMapper = userMapper;
@@ -43,6 +46,12 @@ public class UserService implements UserDetailsService {
         User user = this.userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("Utilisateur non trouvé"));
 
+        return userMapper.toUserDto(user);
+    }
+
+    public UserResponseDto getUserByEmailOrUsername(String identifier) throws UsernameNotFoundException {
+        User user = userRepository.findByEmailOrUsername(identifier, identifier)
+                .orElseThrow(() -> new UsernameNotFoundException("Utilisateur non trouvé avec email ou username: " + identifier));
         return userMapper.toUserDto(user);
     }
 

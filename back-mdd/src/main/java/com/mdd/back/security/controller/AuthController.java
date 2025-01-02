@@ -28,21 +28,32 @@ public class AuthController {
         this.userService = userService;
     }
 
-    //TODO: Possibilité de se connecter avec email ou nom d'utilisateur
     @PostMapping("/login")
     public BearerResponseDto login(@Valid @RequestBody LoginRequestDto loginRequestDto) {
+        UserResponseDto user = userService.getUserByEmailOrUsername(loginRequestDto.getIdentifier());
+
         final Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequestDto.getEmail(), loginRequestDto.getPassword())
+                new UsernamePasswordAuthenticationToken(user.getEmail(), loginRequestDto.getPassword())
         );
         if (authentication.isAuthenticated()) {
-            return jwtService.generate(loginRequestDto.getEmail());
+            return jwtService.generate(user.getEmail());
         }
         return null;
     }
 
     @PostMapping("/register")
-    public void register(@Valid @RequestBody RegisterRequestDto registerRequestDto) {
+    public BearerResponseDto register(@Valid @RequestBody RegisterRequestDto registerRequestDto) {
+        String savedPassword = registerRequestDto.getPassword();
+
         userService.register(registerRequestDto);
+
+        final Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(registerRequestDto.getEmail(), savedPassword)
+        );
+        if (authentication.isAuthenticated()) {
+            return jwtService.generate(registerRequestDto.getEmail());
+        }
+        return null;
     }
 
     @PostMapping("/refresh-token")

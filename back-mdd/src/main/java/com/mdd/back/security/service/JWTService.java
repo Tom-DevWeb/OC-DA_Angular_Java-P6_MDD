@@ -30,7 +30,6 @@ import java.util.function.Function;
 import static io.jsonwebtoken.Claims.EXPIRATION;
 import static io.jsonwebtoken.Claims.SUBJECT;
 
-//FIXME Renvoyer des Unauthoriz 401 quand token non valide pour relancer une connexion avec refresh token
 @Slf4j
 @Service
 public class JWTService {

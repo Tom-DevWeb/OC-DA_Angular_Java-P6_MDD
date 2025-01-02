@@ -7,9 +7,9 @@ import lombok.Data;
 @Data
 public class LoginRequestDto {
 
-    @Email(message = "L'email doit être valide")
-    @NotBlank(message = "L'email ne peut pas être vide")
-    private String email;
+    @Email(message = "L'email ou username doit être valide")
+    @NotBlank(message = "L'email ou username ne peut pas être vide")
+    private String identifier;
 
     @NotBlank(message = "Le mot de passe ne peut pas être vide")
     private String password;
