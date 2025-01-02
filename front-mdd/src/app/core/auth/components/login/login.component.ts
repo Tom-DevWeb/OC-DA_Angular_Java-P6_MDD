@@ -42,7 +42,7 @@ export class LoginComponent implements OnInit {
 
   initFormControls() {
     this.formGroup = this.formBuilder.group({
-      email: ['', [Validators.required]],
+      identifier: ['', [Validators.required]],
       password: ['', Validators.required],
     })
   }
@@ -50,7 +50,7 @@ export class LoginComponent implements OnInit {
   onLogin() {
     if (this.formGroup.valid) {
       const loginRequest: LoginRequest = {
-        email: this.formGroup.value.email,
+        identifier: this.formGroup.value.identifier,
         password: this.formGroup.value.password,
       }
       this.authService.login(loginRequest).subscribe({
