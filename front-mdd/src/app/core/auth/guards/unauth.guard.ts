@@ -21,7 +21,7 @@ export class UnauthGuard implements CanActivate {
     return this.tokenService.currentUser$.pipe(
       map(isConnected => {
         if (isConnected) {
-          this.router.navigate(['/articles']);
+          this.router.navigate(['/articles/list']);
           return false
         } else {
           return true;

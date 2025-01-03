@@ -1,8 +1,22 @@
-<header class="flex flex-row justify-content-between border-bottom-1 mb-6">
+<header class="flex flex-row justify-content-between align-items-center border-bottom-1 mb-6 px-4 md:px-6">
   <p-image src="/images/mdd_logo.svg" routerLink="/" class="cursor-pointer"/>
-  <ul *ngIf="isLogged$ | async" class="hidden sm:flex gap-2">
-    <li><a routerLink="" routerLinkActive="active" ariaCurrentWhenActive="page">Articles</a></li>
-    <li><a routerLink="">Thèmes</a></li>
-    <li><a routerLink=""><p-avatar icon="pi pi-user" shape="circle"/></a></li>
+  <ul *ngIf="isLogged$ | async" class="hidden sm:flex gap-4 list-none align-items-center text-xl">
+    <li><a routerLink="/articles/list" routerLinkActive="active" ariaCurrentWhenActive="page">Articles</a></li>
+    <li><a routerLink="/themes" routerLinkActive="active" ariaCurrentWhenActive="page">Thèmes</a></li>
+    <li><a class="p-button custom-button" routerLink="/profile" routerLinkActive="activeProfile" ariaCurrentWhenActive="page"><i class="pi pi-user text-4xl"></i></a></li>
   </ul>
+  <p-drawer class="block sm:hidden h-full" [(visible)]="visible" position="right" closable="false" blockScroll="true">
+    <div class="flex flex-column justify-content-between h-full">
+      <ul class="list-none text-xl flex flex-column align-items-end gap-3">
+        <li><a routerLink="/articles/list" routerLinkActive="active" ariaCurrentWhenActive="page">Articles</a></li>
+        <li><a routerLink="/themes" routerLinkActive="active" ariaCurrentWhenActive="page">Thèmes</a></li>
+      </ul>
+      <div class="ml-auto">
+        <a class="p-button custom-button" routerLink="/profile" routerLinkActive="activeProfile" ariaCurrentWhenActive="page">
+          <i class="pi pi-user text-4xl"></i>
+        </a>
+      </div>
+    </div>
+  </p-drawer>
+  <p-button aria-label="menu" severity="contrast" class="block sm:hidden" (click)="visible=true" icon="pi pi-bars" [rounded]="true" [text]="true"/>
 </header>
