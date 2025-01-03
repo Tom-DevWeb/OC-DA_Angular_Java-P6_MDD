@@ -1,28 +1,51 @@
 import {Component, OnInit} from '@angular/core';
-import {AuthService} from '../../../../core/auth/services/auth.service';
+import {Button, ButtonDirective} from 'primeng/button';
+import {ArticleService} from '../../services/article.service';
+import {ArticleResponse} from '../../models/articleResponse';
+import {AsyncPipe, DatePipe, NgFor, NgIf, TitleCasePipe} from '@angular/common';
+import {DataView} from 'primeng/dataview';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-list-article',
-  imports: [],
+  imports: [
+    Button,
+    ButtonDirective,
+    NgIf,
+    DataView,
+    AsyncPipe,
+    NgFor,
+    DatePipe,
+    TitleCasePipe
+  ],
   templateUrl: './list-article.component.html',
   styleUrl: './list-article.component.scss'
 })
 export class ListArticleComponent implements OnInit {
 
-  myName: string = ''
+  public articles$!: Observable<ArticleResponse[]>;
 
-  constructor(private authService: AuthService) {
+  sortOrder: number = 1
+
+  sortField: string = 'title'
+
+  constructor(private articleService: ArticleService) {
   }
 
 
   ngOnInit() {
-    this.authme()
+    this.getArticles()
   }
 
-  authme() {
-    this.authService.authMe().subscribe({
-      next: (response) => {
-        this.myName = response.username;
+  toggleSortOrder() {
+    this.sortOrder = this.sortOrder === 1 ? -1 : 1
+  }
+
+  getArticles() {
+    this.articles$ = this.articleService.getArticles()
+    this.articles$.subscribe({
+      next: (value) => {
+        console.log(value);
       },
       error: (error) => {
         console.log(error);

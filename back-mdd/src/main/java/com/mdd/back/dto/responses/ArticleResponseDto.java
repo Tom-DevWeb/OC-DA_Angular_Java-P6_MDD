@@ -10,6 +10,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class ArticleResponseDto {
 
+    private Long id;
     private String title;
     private String content;
     private Theme theme;
