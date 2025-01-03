@@ -5,7 +5,7 @@
     <li><a routerLink="/themes" routerLinkActive="active" ariaCurrentWhenActive="page">Thèmes</a></li>
     <li><a class="p-button custom-button" routerLink="/profile" routerLinkActive="activeProfile" ariaCurrentWhenActive="page"><i class="pi pi-user text-4xl"></i></a></li>
   </ul>
-  <p-drawer class="block sm:hidden h-full" [(visible)]="visible" position="right" closable="false" blockScroll="true">
+  <p-drawer class="block sm:hidden h-full" styleClass="w-15rem" [(visible)]="visible" position="right" closable="false" blockScroll="true">
     <div class="flex flex-column justify-content-between h-full">
       <ul class="list-none text-xl flex flex-column align-items-end gap-3">
         <li><a routerLink="/articles/list" routerLinkActive="active" ariaCurrentWhenActive="page">Articles</a></li>
