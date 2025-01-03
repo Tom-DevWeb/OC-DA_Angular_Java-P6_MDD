@@ -1,8 +1,7 @@
 import {Routes} from '@angular/router';
-import {CreateArticleComponent} from './components/create-article/create-article.component';
-import {ListArticleComponent} from './components/list-article/list-article.component';
 import {AuthGuard} from '../../core/auth/guards/auth.guard';
 import {HeaderLayoutComponent} from '../../shared/layout/header-layout/header-layout.component';
+import {ListThemeComponent} from './components/list-theme/list-theme.component';
 
 
 export const routes: Routes = [
@@ -12,17 +11,8 @@ export const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'list',
         pathMatch: 'full',
-      },
-      {
-        path: 'list',
-        component: ListArticleComponent,
-        canActivate: [AuthGuard],
-      },
-      {
-        path: 'create',
-        component: CreateArticleComponent,
+        component: ListThemeComponent,
         canActivate: [AuthGuard],
       }
     ]},

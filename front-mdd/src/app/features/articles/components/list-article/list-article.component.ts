@@ -23,7 +23,7 @@ import {Observable} from 'rxjs';
 })
 export class ListArticleComponent implements OnInit {
 
-  public articles$!: Observable<ArticleResponse[]>;
+  public articles$!: Observable<ArticleResponse[]>
 
   sortOrder: number = 1
 
