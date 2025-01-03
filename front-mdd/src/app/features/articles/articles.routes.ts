@@ -3,6 +3,7 @@ import {CreateArticleComponent} from './components/create-article/create-article
 import {ListArticleComponent} from './components/list-article/list-article.component';
 import {AuthGuard} from '../../core/auth/guards/auth.guard';
 import {HeaderLayoutComponent} from '../../shared/layout/header-layout/header-layout.component';
+import {ContentArticleComponent} from './components/content-article/content-article.component';
 
 
 export const routes: Routes = [
@@ -18,6 +19,11 @@ export const routes: Routes = [
       {
         path: 'list',
         component: ListArticleComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+        path: ':articleId',
+        component: ContentArticleComponent,
         canActivate: [AuthGuard],
       },
       {

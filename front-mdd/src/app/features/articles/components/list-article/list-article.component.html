@@ -15,7 +15,7 @@
       </ng-template>
       <ng-template #grid let-article>
         <div class="grid my-4">
-          <a *ngFor="let article of articles; let first = first" class="col-12 sm:col-6">
+          <a routerLink="/articles/{{article.id}}" *ngFor="let article of articles; let first = first" class="col-12 sm:col-6">
             <div class="card">
               <h2 class="text-base text-semibold">{{article.title | titlecase }}</h2>
               <div class="flex gap-8 text-sm">

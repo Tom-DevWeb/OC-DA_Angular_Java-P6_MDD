@@ -1,0 +1,10 @@
+.borderColor {
+  border: 0.05rem solid var(--p-neutral-950);
+  border-radius: 90rem;
+}
+
+.customBackground {
+  background-color: var(--p-neutral-100);
+  border-radius: var(--p-border-radius-md);
+  padding: 8px 24px;
+}

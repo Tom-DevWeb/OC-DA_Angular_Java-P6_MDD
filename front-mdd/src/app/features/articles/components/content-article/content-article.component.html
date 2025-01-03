@@ -1,0 +1,27 @@
+<!-- TODO: Finir version pc et faire responsive -->
+<main class="flex flex-column align-items-center gap-2 mx-1 sm:mx-8">
+  <article *ngIf="article" class="w-full">
+    <h2 class="m-0 text-2xl font-semibold">{{article.title | titlecase }}</h2>
+    <ul class="list-none p-0 flex gap-6 text-xl">
+      <li>{{article.createdAt | date}}</li>
+      <li>{{article.author | titlecase }}</li>
+      <li>{{article.theme.title | titlecase}}</li>
+    </ul>
+    <p>{{article.content}}</p>
+  </article>
+  <div class="borderColor w-full my-4"></div>
+  <section *ngIf="comments" class="text-xl w-full">
+    <h3 class="m-0 font-normal">Commentaires</h3>
+    <ul class="list-none p-0" *ngFor="let comment of comments">
+      <li class="flex gap-4 ml-8">
+        <span>{{comment.authorUsername}}</span>
+        <p class="m-0 customBackground">{{comment.content}}</p>
+      </li>
+    </ul>
+  </section>
+  <form [formGroup]="formGroup" (ngSubmit)="onSubmit()" class="formgrid grid w-full my-6">
+    <p-message *ngIf="errorMessage" severity="error" icon="pi pi-times-circle" styleClass="mb-2" class="p-2 mb-2 col-12">{{errorMessage}}</p-message>
+    <textarea class="col-7 col-offset-2" autoResize="true" rows="6" pTextarea formControlName="content" placeholder="Ecrivez ici votre commentaire"></textarea>
+    <p-button class="col-2" icon="pi pi-send" size="large" type="submit" [disabled]="formGroup.invalid"/>
+  </form>
+</main>

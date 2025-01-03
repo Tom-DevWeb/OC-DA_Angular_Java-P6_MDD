@@ -5,6 +5,7 @@ import {ArticleResponse} from '../../models/articleResponse';
 import {AsyncPipe, DatePipe, NgFor, NgIf, TitleCasePipe} from '@angular/common';
 import {DataView} from 'primeng/dataview';
 import {Observable} from 'rxjs';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-list-article',
@@ -16,7 +17,8 @@ import {Observable} from 'rxjs';
     AsyncPipe,
     NgFor,
     DatePipe,
-    TitleCasePipe
+    TitleCasePipe,
+    RouterLink
   ],
   templateUrl: './list-article.component.html',
   styleUrl: './list-article.component.scss'
