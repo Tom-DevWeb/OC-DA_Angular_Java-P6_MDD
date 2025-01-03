@@ -44,11 +44,8 @@ export class ListArticleComponent implements OnInit {
   getArticles() {
     this.articles$ = this.articleService.getArticles()
     this.articles$.subscribe({
-      next: (value) => {
-        console.log(value);
-      },
       error: (error) => {
-        console.log(error);
+        console.error(error);
       }
     })
   }
