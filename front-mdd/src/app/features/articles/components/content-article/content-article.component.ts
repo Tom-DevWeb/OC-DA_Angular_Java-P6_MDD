@@ -2,12 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {ArticleService} from '../../services/article.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ArticleResponse} from '../../models/articleResponse';
-import {DatePipe, NgFor, NgIf, TitleCasePipe} from '@angular/common';
-import {Divider} from 'primeng/divider';
+import {DatePipe, Location, NgFor, NgIf, TitleCasePipe} from '@angular/common';
 import {CommentResponse} from '../../models/commentResponse';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
-import {LoginRequest} from '../../../../core/auth/models/loginRequest';
-import {BearerResponse} from '../../../../core/auth/models/bearerResponse';
 import {CommentRequest} from '../../models/commentRequest';
 import {AuthService} from '../../../../core/auth/services/auth.service';
 import {Button} from 'primeng/button';
@@ -20,7 +17,6 @@ import {Textarea} from 'primeng/textarea';
     TitleCasePipe,
     NgFor,
     NgIf,
-    Divider,
     FormsModule,
     Button,
     Message,
@@ -46,7 +42,8 @@ export class ContentArticleComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private formBuilder: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    private location: Location
   ) {}
 
   ngOnInit() {
@@ -113,4 +110,9 @@ export class ContentArticleComponent implements OnInit {
       )
     }
   }
+
+  goBack() {
+    this.location.back();
+  }
+
 }
