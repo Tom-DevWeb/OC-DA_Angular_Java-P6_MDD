@@ -27,7 +27,7 @@ export class ListArticleComponent implements OnInit {
 
   public articles$!: Observable<ArticleResponse[]>
 
-  sortOrder: number = 1
+  sortOrder: number = 0
 
   sortField: string = 'title'
 
@@ -40,7 +40,7 @@ export class ListArticleComponent implements OnInit {
   }
 
   toggleSortOrder() {
-    this.sortOrder = this.sortOrder === 1 ? -1 : 1
+      this.sortOrder = this.sortOrder === 1 ? -1 : 1
   }
 
   getArticles() {
