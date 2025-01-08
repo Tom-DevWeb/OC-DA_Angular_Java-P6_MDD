@@ -5,6 +5,7 @@ import com.mdd.back.dto.requests.ModifyUserRequestDto;
 import com.mdd.back.dto.requests.RegisterRequestDto;
 import com.mdd.back.entities.User;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
@@ -12,6 +13,7 @@ public interface UserMapper {
 
     User toUser(RegisterRequestDto userDto);
 
+    @Mapping(source = "realUsername", target = "username")
     UserResponseDto toUserDto(User user);
 
     void updateUserFromDto(ModifyUserRequestDto userDto, @MappingTarget User user);

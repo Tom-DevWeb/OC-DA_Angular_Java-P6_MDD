@@ -97,7 +97,7 @@ public class JWTService {
         final long expirationTimeMillis = currentTimeMillis + expirationTime;
 
         Map<String, Object> claims = Map.of(
-                "username", user.getUsername(),
+                "username", user.getRealUsername(),
                 SUBJECT, user.getEmail(),
                 EXPIRATION, new Date(expirationTimeMillis)
         );
