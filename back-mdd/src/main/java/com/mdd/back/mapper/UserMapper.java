@@ -11,11 +11,13 @@ import org.mapstruct.MappingTarget;
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 
+    @Mapping(source = "username", target = "realUsername")
     User toUser(RegisterRequestDto userDto);
 
     @Mapping(source = "realUsername", target = "username")
     UserResponseDto toUserDto(User user);
 
+    @Mapping(source = "username", target = "realUsername")
     void updateUserFromDto(ModifyUserRequestDto userDto, @MappingTarget User user);
 
 }
