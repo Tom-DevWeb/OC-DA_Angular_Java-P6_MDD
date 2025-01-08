@@ -5,6 +5,7 @@ import {BearerResponse} from '../models/bearerResponse';
 import {LoginRequest} from '../models/loginRequest';
 import {UserResponse} from '../models/userResponse';
 import {RegisterRequest} from '../models/registerRequest';
+import {TokenService} from './token.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class AuthService {
   private baseUrl: string = "/api/auth"
 
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private tokenService: TokenService) { }
 
 
 
@@ -35,6 +36,8 @@ export class AuthService {
   }
 
   disconnect() {
+    this.tokenService.removeRefreshToken()
+    this.tokenService.removeBearerToken()
     return this.http.post(`${this.baseUrl}/disconnect`, {});
   }
 }

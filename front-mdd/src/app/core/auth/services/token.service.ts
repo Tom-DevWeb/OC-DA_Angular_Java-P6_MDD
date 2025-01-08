@@ -39,4 +39,8 @@ export class TokenService {
     sessionStorage.removeItem(this.bearerTokenKey)
     this.currentUserSubject.next(false)
   }
+
+  removeRefreshToken(): void {
+    localStorage.removeItem(this.refreshTokenKey)
+  }
 }
