@@ -1,7 +1,7 @@
 <main class="flex flex-column align-items-center gap-2 mx-0 sm:mx-2">
-  <header class="w-full flex gap-2 align-items-center">
+  <header *ngIf="article" class="w-full flex gap-2 align-items-center">
     <p-button (onClick)="goBack()" icon="pi pi-arrow-left" styleClass="p-button-accent-color p-0" size="large" [rounded]="true" [text]="true"/>
-    <h2 class="m-0 text-2xl font-semibold">
+    <h2 class="m-0 text-2xl font-semibold wordBreak">
       {{article.title | titlecase }}</h2>
   </header>
   <article *ngIf="article" class="w-full px-3 sm:pl-6">
