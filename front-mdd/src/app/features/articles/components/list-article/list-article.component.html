@@ -15,14 +15,14 @@
       </ng-template>
       <ng-template #grid let-article>
         <div class="grid my-4">
-          <a routerLink="/articles/read/{{article.id}}" *ngFor="let article of articles; let first = first" class="col-12 sm:col-6 min-h-full">
+          <a routerLink="/articles/read/{{article.id}}" *ngFor="let article of articles; let first = first" class="col-12 sm:col-6">
             <div class="card h-full">
               <h2 class="text-base text-semibold">{{article.title | titlecase }}</h2>
               <div class="flex gap-8 text-sm">
                 <p>{{article.createdAt | date }}</p>
                 <p>{{article.author | titlecase}}</p>
               </div>
-              <p class="text-sm">{{article.content}}</p>
+              <p class="text-sm overflow-hidden paragraph-content">{{article.content}}</p>
             </div>
           </a>
         </div>
