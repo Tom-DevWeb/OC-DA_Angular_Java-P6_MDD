@@ -1,8 +1,7 @@
-import { Component } from '@angular/core';
-import {RouterOutlet} from "@angular/router";
+import {Component} from '@angular/core';
+import {Router, RouterOutlet} from "@angular/router";
 import {HeaderComponent} from '../../../../shared/components/header/header.component';
 import {Button} from 'primeng/button';
-import {Location} from '@angular/common';
 import {Image} from 'primeng/image';
 
 @Component({
@@ -18,11 +17,11 @@ import {Image} from 'primeng/image';
 })
 export class AuthComponent {
 
-  constructor(private location: Location) {
+  constructor(private router: Router) {
   }
 
-  goBack() {
-    this.location.back();
+  goHome() {
+    this.router.navigate(['/'])
   }
 
 }
