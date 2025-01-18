@@ -4,7 +4,7 @@
 ![Spring](https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white)
 ![MySQL](https://img.shields.io/badge/mysql-4479A1.svg?style=for-the-badge&logo=mysql&logoColor=white)
 <br/>
-![Static Badge](https://img.shields.io/badge/18-Angular_version-red)
+![Static Badge](https://img.shields.io/badge/19-Angular_version-red)
 ![Static Badge](https://img.shields.io/badge/23-JAVA_version-orange)
 ![Static Badge](https://img.shields.io/badge/3.3.4-Spring_Boot_version-gree)
 
