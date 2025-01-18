@@ -82,7 +82,6 @@ export class CreateArticleComponent implements OnInit {
           id: this.userId,
         }
       }
-      console.log(articleRequest)
       this.articleService.createArticle(articleRequest).subscribe({
           next: () => {
             this.router.navigate(['/articles']);

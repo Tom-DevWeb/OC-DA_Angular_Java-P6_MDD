@@ -18,6 +18,10 @@ import java.util.stream.Collectors;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
+/**
+ * Contrôleur global pour la gestion des exceptions.
+ * Fournit des gestionnaires spécifiques pour différentes exceptions levées dans l'application.
+ */
 @ControllerAdvice
 public class AdviceController {
 

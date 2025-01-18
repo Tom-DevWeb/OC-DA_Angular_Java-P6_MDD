@@ -10,6 +10,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Contrôleur pour gérer les opérations relatives aux utilisateurs.
+ * Permet notamment la modification des informations d'un utilisateur.
+ */
 @RestController
 @RequestMapping(value = "/users")
 public class UserController {
@@ -20,6 +24,11 @@ public class UserController {
         this.userService = userService;
     }
 
+    /**
+     * Modifie les informations de l'utilisateur actuellement authentifié.
+     *
+     * @param modifyUserRequestDto le DTO contenant les nouvelles informations de l'utilisateur
+     */
     @PutMapping("")
     public void modifyUser(@Valid @RequestBody ModifyUserRequestDto modifyUserRequestDto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

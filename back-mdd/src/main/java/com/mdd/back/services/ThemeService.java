@@ -13,6 +13,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Service pour la gestion des thèmes et des abonnements associés.
+ */
 @Service
 public class ThemeService {
 
@@ -33,12 +36,24 @@ public class ThemeService {
         this.themeSubscriptionRepository = themeSubscriptionRepository;
     }
 
+    /**
+     * Récupère tous les thèmes disponibles.
+     *
+     * @return une liste de DTOs {@link ThemeResponseDto} représentant les thèmes
+     */
     public List<ThemeResponseDto> getThemes() {
         List<Theme> theme = themeRepository.findAll();
 
         return themeMapper.themesToThemeResponseDto(theme);
     }
 
+    /**
+     * Récupère les thèmes auxquels un utilisateur est abonné.
+     *
+     * @param userEmail l'email de l'utilisateur
+     * @return une liste de DTOs {@link ThemeResponseDto} représentant les thèmes abonnés
+     * @throws RuntimeException si l'utilisateur n'est pas trouvé
+     */
     public List<ThemeResponseDto> getSubscribedThemes(String userEmail) {
         User user = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -53,6 +68,13 @@ public class ThemeService {
         return themeMapper.themesToThemeResponseDto(themes);
     }
 
+    /**
+     * Abonne un utilisateur à un thème.
+     *
+     * @param themeId l'identifiant du thème
+     * @param userId l'identifiant de l'utilisateur
+     * @throws RuntimeException si le thème n'est pas trouvé ou si l'utilisateur est déjà abonné au thème
+     */
     public void subscribeTheme(Long themeId, Long userId) {
         themeRepository.findById(themeId)
                 .orElseThrow(() -> new RuntimeException("Theme not found"));
@@ -72,6 +94,13 @@ public class ThemeService {
         themeSubscriptionRepository.save(themeSubscription);
     }
 
+    /**
+     * Désabonne un utilisateur d'un thème.
+     *
+     * @param themeId l'identifiant du thème
+     * @param userId l'identifiant de l'utilisateur
+     * @throws RuntimeException si l'abonnement n'est pas trouvé
+     */
     public void unsubscribeTheme(Long themeId, Long userId) {
 
         ThemeSubscriptionId subscriptionId = new ThemeSubscriptionId();

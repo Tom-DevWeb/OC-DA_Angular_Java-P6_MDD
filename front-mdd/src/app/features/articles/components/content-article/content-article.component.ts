@@ -72,7 +72,7 @@ export class ContentArticleComponent implements OnInit {
         this.comments = comments
       },
       error: err => {
-        console.log(err);
+        console.error(err);
       }
     })
   }

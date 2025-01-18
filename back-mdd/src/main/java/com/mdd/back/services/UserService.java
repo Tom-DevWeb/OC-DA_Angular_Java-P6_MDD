@@ -29,12 +29,25 @@ public class UserService implements UserDetailsService {
         this.userMapper = userMapper;
     }
 
+    /**
+     * Enregistre un nouvel utilisateur dans la base de données.
+     *
+     * @param registerRequestDto les informations de l'utilisateur à enregistrer
+     * @throws RuntimeException si une erreur survient lors de l'enregistrement
+     */
     public void register(RegisterRequestDto registerRequestDto) {
         registerRequestDto.setPassword(bCryptPasswordEncoder.encode(registerRequestDto.getPassword()));
         User user = userMapper.toUser(registerRequestDto);
         userRepository.save(user);
     }
 
+    /**
+     * Récupère un utilisateur par son email.
+     *
+     * @param email l'email de l'utilisateur à récupérer
+     * @return un DTO {@link UserResponseDto} représentant l'utilisateur
+     * @throws UsernameNotFoundException si l'utilisateur avec cet email n'existe pas
+     */
     public UserResponseDto getUserByEmail(String email) throws UsernameNotFoundException {
         User user = this.userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("Utilisateur non trouvé"));
@@ -42,12 +55,27 @@ public class UserService implements UserDetailsService {
         return userMapper.toUserDto(user);
     }
 
+    /**
+     * Récupère un utilisateur par son email ou son nom d'utilisateur.
+     *
+     * @param identifier l'email ou le nom d'utilisateur de l'utilisateur à récupérer
+     * @return un DTO {@link UserResponseDto} représentant l'utilisateur
+     * @throws UsernameNotFoundException si aucun utilisateur n'est trouvé avec cet identifiant
+     */
     public UserResponseDto getUserByEmailOrUsername(String identifier) throws UsernameNotFoundException {
         User user = userRepository.findByEmailOrUsername(identifier, identifier)
                 .orElseThrow(() -> new UsernameNotFoundException("Utilisateur non trouvé avec email ou username: " + identifier));
         return userMapper.toUserDto(user);
     }
 
+    /**
+     * Modifie les informations d'un utilisateur existant.
+     *
+     * @param email l'email de l'utilisateur à modifier
+     * @param userDto les nouvelles informations de l'utilisateur
+     * @throws UsernameNotFoundException si l'utilisateur n'existe pas
+     * @throws IllegalArgumentException si l'email proposé est déjà utilisé par un autre utilisateur
+     */
     public void modifyUser(String email, ModifyUserRequestDto userDto) {
         User user = this.userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("Utilisateur non trouvé"));
@@ -73,6 +101,13 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
     }
 
+    /**
+     * Charge un utilisateur basé sur son nom d'utilisateur (utilisé pour l'authentification).
+     *
+     * @param username le nom d'utilisateur (ici l'email) de l'utilisateur à charger
+     * @return l'utilisateur correspondant
+     * @throws BadCredentialsException si l'utilisateur n'est pas trouvé
+     */
     @Override
     public User loadUserByUsername(String username) throws BadCredentialsException {
         return this.userRepository.findByEmail(username)
