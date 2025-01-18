@@ -6,15 +6,19 @@
   <form [formGroup]="formGroup" (ngSubmit)="onRegister()" class="formgrid grid mx-3 md:mx-0 md:w-20rem">
     <div class="field col-12">
       <label for="username">Nom d'utilisateur</label>
-      <input pInputText formControlName="username" id="username" class="surface-border w-full">
+      <input pInputText type="text" formControlName="username" id="username" class="surface-border w-full">
     </div>
     <div class="field col-12">
       <label for="email">E-mail</label>
-      <input pInputText formControlName="email" id="email" class="surface-border w-full">
+      <input pInputText type="email" formControlName="email" id="email" class="surface-border w-full">
     </div>
     <div class="field col-12">
       <label for="password">Mot de passe</label>
       <p-password formControlName="password" inputId="password" [toggleMask]="true" [feedback]="false" styleClass="w-full"  inputStyleClass="surface-border w-full"/>
+      <p-message *ngIf="formGroup.get('password')?.hasError('pattern') && formGroup.get('password')?.touched"
+                 severity="error"
+                 text="Le mot de passe doit contenir au moins 8 caractères, une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial."
+                 styleClass="mt-1"></p-message>
     </div>
       <p-message *ngIf="errorMessage" severity="error" icon="pi pi-times-circle" styleClass="mb-2" class="p-2 mb-2">{{errorMessage}}</p-message>
     <p-button class="mx-auto" label="S'inscrire" type="submit" [disabled]="formGroup.invalid"/>

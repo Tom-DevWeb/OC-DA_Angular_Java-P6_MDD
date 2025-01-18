@@ -41,11 +41,14 @@ export class RegisterComponent implements OnInit {
     this.initFormControls()
   }
 
+
   initFormControls() {
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,}$/
+
     this.formGroup = this.formBuilder.group({
       username: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
+      password: ['', [Validators.required, Validators.pattern(passwordRegex)]],
     })
   }
 
