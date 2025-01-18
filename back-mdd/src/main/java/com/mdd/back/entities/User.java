@@ -20,8 +20,8 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String username;
+    @Column(name = "username", nullable = false)
+    private String realUsername;
 
     @Column(nullable = false, unique = true)
     private String email;
@@ -40,10 +40,6 @@ public class User implements UserDetails {
     @Override
     public String getUsername() {
         return this.email;
-    }
-
-    public String getRealUsername() {
-        return this.username;
     }
 
     @Override

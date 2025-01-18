@@ -1,0 +1,18 @@
+<main class="flex flex-column align-items-center mx-4 sm:mx-6">
+  <header class="grid grid-nogutter mb-6 w-full">
+    <p-button class="col-12 sm:col-1 hidden sm:block" (onClick)="goHome()" icon="pi pi-arrow-left" styleClass="p-button-accent-color p-0" size="large" [rounded]="true" [text]="true"/>
+    <h1 class="font-bold text-2xl text-center col-12 sm:col-6 sm:col-offset-2">Se connecter</h1>
+  </header>
+  <form [formGroup]="formGroup" (ngSubmit)="onLogin()" class="formgrid grid w-auto mx-3 sm:mx-0 sm:w-20rem">
+    <div class="field col-12">
+      <label for="identifier">E-mail ou nom d'utilisateur</label>
+      <input pInputText formControlName="identifier" id="identifier" class="surface-border w-full">
+    </div>
+    <div class="field col-12">
+      <label for="password">Mot de passe</label>
+      <p-password formControlName="password" inputId="password" [toggleMask]="true" [feedback]="false" styleClass="w-full"  inputStyleClass="surface-border w-full"/>
+    </div>
+    <p-message *ngIf="errorMessage" severity="error" icon="pi pi-times-circle" styleClass="mb-2" class="p-2 mb-2">{{errorMessage}}</p-message>
+    <p-button class="mx-auto" label="Se connecter" type="submit" [disabled]="formGroup.invalid"/>
+  </form>
+</main>

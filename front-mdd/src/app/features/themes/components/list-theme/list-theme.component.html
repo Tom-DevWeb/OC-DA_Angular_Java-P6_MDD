@@ -1,0 +1,26 @@
+<main class="flex flex-column mx-4 sm:mx-8">
+  <ng-container *ngIf="themes">
+    <p-dataView #dv
+                [value]="themes"
+                [paginator]="false"
+                layout="grid"
+    >
+      <ng-template #grid let-theme>
+        <div class="grid sm:my-4">
+          <a *ngFor="let theme of themes; let first = first" class="col-12 sm:col-6">
+            <section class="card flex flex-column gap-3 py-4">
+              <h2 class="text-base text-semibold m-0">{{theme.title | titlecase }}</h2>
+              <p class="text-sm m-0">{{theme.description}}</p>
+              <p-button
+                class="mx-auto"
+                [label]="isSubscribed(theme.id) ? 'Se désabonner' : 'S\'abonner'"
+                [severity]="isSubscribed(theme.id) ? 'primary' : 'secondary'"
+                (onClick)="toggleSubscription(theme.id)"
+              />
+            </section>
+          </a>
+        </div>
+      </ng-template>
+    </p-dataView>
+  </ng-container>
+</main>

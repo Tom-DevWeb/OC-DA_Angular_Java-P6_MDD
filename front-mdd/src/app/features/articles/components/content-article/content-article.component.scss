@@ -1,0 +1,32 @@
+.borderColor {
+  border: 0.05rem solid var(--p-neutral-950);
+  border-radius: 90rem;
+}
+
+.customBackground {
+  background-color: var(--p-neutral-100);
+  border-radius: var(--p-border-radius-md);
+  padding: 8px 24px;
+}
+
+.borderCustom {
+  border: 1px solid var(--p-neutral-950);
+  border-radius: 10px;
+}
+
+.textareaColor {
+  &::placeholder {
+    color: var(--p-neutral-400);
+  }
+}
+
+.buttonSize {
+    font-size: 2.75rem !important;
+}
+
+.wordBreak {
+  word-wrap: break-word;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+}

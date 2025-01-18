@@ -4,6 +4,7 @@ import com.mdd.back.dto.responses.ThemeResponseDto;
 import com.mdd.back.services.ThemeService;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -19,6 +20,12 @@ public class ThemeController {
     @GetMapping("")
     public List<ThemeResponseDto> getThemes() {
         return themeService.getThemes();
+    }
+
+    @GetMapping("/subscriptions")
+    public List<ThemeResponseDto> getSubscribedThemes(Principal principal) {
+        String email = principal.getName();
+        return themeService.getSubscribedThemes(email);
     }
 
     @PostMapping("/{id}/users/{userId}")

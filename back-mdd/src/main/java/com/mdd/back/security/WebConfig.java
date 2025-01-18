@@ -1,5 +1,6 @@
 package com.mdd.back.security;
 
+import com.mdd.back.security.jwt.AuthEntryPointJwt;
 import com.mdd.back.security.jwt.JWTFilter;
 import com.mdd.back.services.UserService;
 import org.springframework.context.annotation.Bean;
@@ -30,16 +31,18 @@ public class WebConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, AuthEntryPointJwt authEntryPointJwt) throws Exception {
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
+                .exceptionHandling(exceptionHandling ->
+                        exceptionHandling.authenticationEntryPoint(authEntryPointJwt))
                 .authorizeHttpRequests(
                         authorizationManagerRequestMatcherRegistry -> {
                             AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry
                                     authorizationManagerRequestMatcherRegistry1 = authorizationManagerRequestMatcherRegistry
-                                    .requestMatchers(POST, "/users/register").permitAll()
-                                    .requestMatchers(POST, "/users/login").permitAll()
-                                    .requestMatchers(POST, "/users/refresh-token").permitAll();
+                                    .requestMatchers(POST, "/auth/register").permitAll()
+                                    .requestMatchers(POST, "/auth/login").permitAll()
+                                    .requestMatchers(POST, "/auth/refresh-token").permitAll();
 
                                     authorizationManagerRequestMatcherRegistry1.anyRequest().authenticated();
                         }

@@ -1,8 +1,8 @@
 package com.mdd.back.services;
 
-import com.mdd.back.dto.responses.UserResponseDto;
 import com.mdd.back.dto.requests.ModifyUserRequestDto;
 import com.mdd.back.dto.requests.RegisterRequestDto;
+import com.mdd.back.dto.responses.UserResponseDto;
 import com.mdd.back.entities.User;
 import com.mdd.back.mapper.UserMapper;
 import com.mdd.back.repositories.UserRepository;
@@ -20,7 +20,10 @@ public class UserService implements UserDetailsService {
     private final UserMapper userMapper;
 
 
-    public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, UserMapper userMapper) {
+    public UserService(
+            UserRepository userRepository,
+            BCryptPasswordEncoder bCryptPasswordEncoder,
+            UserMapper userMapper) {
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.userMapper = userMapper;
@@ -46,6 +49,12 @@ public class UserService implements UserDetailsService {
         return userMapper.toUserDto(user);
     }
 
+    public UserResponseDto getUserByEmailOrUsername(String identifier) throws UsernameNotFoundException {
+        User user = userRepository.findByEmailOrUsername(identifier, identifier)
+                .orElseThrow(() -> new UsernameNotFoundException("Utilisateur non trouvé avec email ou username: " + identifier));
+        return userMapper.toUserDto(user);
+    }
+
     public void modifyUser(String email, ModifyUserRequestDto userDto) {
         User user = this.userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("Utilisateur non trouvé"));
@@ -58,6 +67,12 @@ public class UserService implements UserDetailsService {
             if (emailExists) {
                 throw new IllegalArgumentException("Cet email est déjà utilisé par un autre utilisateur.");
             }
+        }
+        if (userDto.getPassword() != null && !userDto.getPassword().isBlank()) {
+            String hashedPassword = bCryptPasswordEncoder.encode(userDto.getPassword());
+            userDto.setPassword(hashedPassword);
+        } else {
+            userDto.setPassword(null);
         }
 
         userMapper.updateUserFromDto(userDto, user);

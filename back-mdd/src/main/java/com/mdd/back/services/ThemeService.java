@@ -5,9 +5,11 @@ import com.mdd.back.dto.responses.ThemesUserResponseDto;
 import com.mdd.back.entities.Theme;
 import com.mdd.back.entities.ThemeSubscription;
 import com.mdd.back.entities.ThemeSubscriptionId;
+import com.mdd.back.entities.User;
 import com.mdd.back.mapper.ThemeMapper;
 import com.mdd.back.repositories.ThemeRepository;
 import com.mdd.back.repositories.ThemeSubscriptionRepository;
+import com.mdd.back.repositories.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -17,15 +19,18 @@ import java.util.List;
 @Service
 public class ThemeService {
 
+    private final UserRepository userRepository;
     private final ThemeMapper themeMapper;
     private final ThemeRepository themeRepository;
     private final ThemeSubscriptionRepository themeSubscriptionRepository;
 
     public ThemeService(
+            UserRepository userRepository,
             ThemeMapper themeMapper,
             ThemeRepository themeRepository,
             ThemeSubscriptionRepository themeSubscriptionRepository
     ) {
+        this.userRepository = userRepository;
         this.themeMapper = themeMapper;
         this.themeRepository = themeRepository;
         this.themeSubscriptionRepository = themeSubscriptionRepository;
@@ -35,6 +40,20 @@ public class ThemeService {
         List<Theme> theme = themeRepository.findAll();
 
         return themeMapper.themesToThemeResponseDto(theme);
+    }
+
+    public List<ThemeResponseDto> getSubscribedThemes(String userEmail) {
+        User user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        List<ThemeSubscription> subscriptions = themeSubscriptionRepository.findById_User(user.getId());
+
+        List<Theme> themes = subscriptions.stream()
+                .map(subscription -> themeRepository.findById(subscription.getId().getTheme())
+                        .orElseThrow(() -> new RuntimeException("Theme not found")))
+                .toList();
+
+        return themeMapper.themesToThemeResponseDto(themes);
     }
 
     public void subscribeTheme(Long themeId, Long userId) {

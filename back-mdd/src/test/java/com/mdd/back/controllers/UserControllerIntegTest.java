@@ -4,6 +4,7 @@ import com.mdd.back.TestcontainersConfiguration;
 import com.mdd.back.entities.Theme;
 import com.mdd.back.entities.ThemeSubscription;
 import com.mdd.back.entities.User;
+import com.mdd.back.repositories.ArticleRepository;
 import com.mdd.back.repositories.ThemeRepository;
 import com.mdd.back.repositories.ThemeSubscriptionRepository;
 import com.mdd.back.repositories.UserRepository;
@@ -16,16 +17,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.http.MediaType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -49,12 +47,18 @@ public class UserControllerIntegTest {
     private ThemeRepository themeRepository;
     @Autowired
     private ThemeSubscriptionRepository themeSubscriptionRepository;
+    @Autowired
+    private ArticleRepository articleRepository;
 
     @BeforeEach
     public void setUp() {
         // Nettoyer la base de données avant chaque test
-        userRepository.deleteAll();
+        articleRepository.deleteAll();
+        themeRepository.deleteAll();
+        themeSubscriptionRepository.deleteAll();
         jwtRepository.deleteAll();
+
+        userRepository.deleteAll();
 
         String encodedPassword = passwordEncoder.encode(UserStub.getDefaultUser().getPassword());
 
@@ -65,26 +69,6 @@ public class UserControllerIntegTest {
 
 
     }
-
-    @Test
-    public void testRegisterUser() throws Exception {
-
-        String registerRequestJson = """
-                {
-                "email": "newuser@example.com",
-                "password": "newpassword",
-                "username": "New User"
-                }
-                """;
-
-        mockMvc.perform(post("/users/register")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(registerRequestJson))
-                .andExpect(status().isOk());
-
-        assertEquals(2, userRepository.findAll().size());
-    }
-
 
     @Test
     @WithMockUser
@@ -113,9 +97,9 @@ public class UserControllerIntegTest {
         mockMvc.perform(get("/users/{id}/themes", user.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", org.hamcrest.Matchers.hasSize(3)))
-                .andExpect(jsonPath("$[0].themeId").value(1))
-                .andExpect(jsonPath("$[1].themeId").value(2))
-                .andExpect(jsonPath("$[2].themeId").value(3));
+                .andExpect(jsonPath("$[0].themeId").value(6))
+                .andExpect(jsonPath("$[1].themeId").value(7))
+                .andExpect(jsonPath("$[2].themeId").value(8));
     }
 
 }

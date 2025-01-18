@@ -1,1 +1,21 @@
 /* You can add global styles to this file, and also import other style files */
+@import "primeicons/primeicons.css";
+
+body {
+  font-family: 'Inter', sans-serif;
+}
+
+a {
+  text-decoration: none;
+  color: var(--p-neutral-950);
+}
+
+.active {
+  color: var(--p-primary-color);
+}
+
+.activeProfile {
+  color: var(--p-primary-color) !important;
+  background-color: var(--p-gray-300) !important;
+  border: 4px solid var(--p-primary-color) !important;
+}

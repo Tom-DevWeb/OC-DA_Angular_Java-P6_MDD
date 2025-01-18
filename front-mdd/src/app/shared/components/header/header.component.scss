@@ -1,0 +1,14 @@
+.custom-button {
+  box-sizing: content-box;
+  background-color: var(--p-gray-300);
+  color: var(--p-neutral-950);
+  border-radius: 900rem;
+  border: 4px solid var(--p-gray-300);
+  padding: 0.5rem;
+
+  &:hover {
+    background-color: var(--p-primary-color) !important;
+    color: var(--p-neutral-100) !important;
+    border: 4px solid var(--p-primary-color) !important;
+  }
+}

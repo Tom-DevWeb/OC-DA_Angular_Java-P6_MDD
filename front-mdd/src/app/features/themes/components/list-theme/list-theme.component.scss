@@ -1,0 +1,13 @@
+::ng-deep .p-dataview-header {
+  padding: 0 !important;
+  border: 0 !important;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card {
+  background-color: var(--p-neutral-50);
+  border-radius: var(--p-border-radius-md);
+  padding: 6px 24px;
+}
