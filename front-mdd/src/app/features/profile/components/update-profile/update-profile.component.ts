@@ -10,6 +10,9 @@ import {AuthService} from '../../../../core/auth/services/auth.service';
 import {ThemeService} from '../../../themes/services/theme.service';
 import {Router} from '@angular/router';
 import {ModifyUserRequest} from '../../models/modifyUserRequest';
+import {Password} from 'primeng/password';
+import {Toast} from 'primeng/toast';
+import {MessageService} from 'primeng/api';
 
 @Component({
   selector: 'app-update-profile',
@@ -19,10 +22,13 @@ import {ModifyUserRequest} from '../../models/modifyUserRequest';
     InputText,
     Message,
     NgIf,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    Password,
+    Toast
   ],
   templateUrl: './update-profile.component.html',
-  styleUrl: './update-profile.component.scss'
+  styleUrl: './update-profile.component.scss',
+  providers: [MessageService]
 })
 export class UpdateProfileComponent implements OnInit {
 
@@ -37,6 +43,7 @@ export class UpdateProfileComponent implements OnInit {
     private authService: AuthService,
     private themeService: ThemeService,
     private router: Router,
+    private messageService: MessageService,
   ) {
   }
 
@@ -46,9 +53,12 @@ export class UpdateProfileComponent implements OnInit {
   }
 
   initFormControls() {
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,}$/
+
     this.formGroup = this.formBuilder.group({
       username: ["", Validators.required],
       email: ["", Validators.required],
+      password: [null, [Validators.pattern(passwordRegex)]],
     })
   }
 
@@ -68,14 +78,17 @@ export class UpdateProfileComponent implements OnInit {
       const modifyUserRequest: ModifyUserRequest = {
         username: this.formGroup.value.username,
         email: this.formGroup.value.email,
+        password: this.formGroup.value.password,
       }
       this.profileService.updateUser(this.userId ,modifyUserRequest).subscribe({
           next: () => {
+            this.errorMessage = null;
             this.router.navigate(['/profile']);
+            this.messageService.add({ severity: 'success', summary: 'Modification enregistrée' });
           },
           error: (err) => {
             console.error(err);
-            this.errorMessage = err.message;
+            this.errorMessage = err.error != null ? err.error.message : err.message;
           }
         }
       )

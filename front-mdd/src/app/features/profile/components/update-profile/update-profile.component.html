@@ -1,14 +1,31 @@
 <main class="flex flex-column align-items-center gap-4 mx-4 sm:mx-8">
   <form [formGroup]="formGroup" (ngSubmit)="onSubmit()" class="formgrid grid mx-3 row-gap-3 md:mx-0 md:w-20rem">
-    <h1 class="font-bold text-2xl text-center col-12">Créer un nouvel article</h1>
+    <h1 class="font-bold text-2xl text-center col-12">Profil utilisateur</h1>
     <div class="field col-12">
       <input pInputText placeholder="Username" formControlName="username" class="surface-border w-full">
     </div>
     <div class="field col-12">
       <input pInputText placeholder="email@email.fr" formControlName="email" class="surface-border w-full">
     </div>
+    <div class="field col-12">
+      <p-password
+        placeholder="Mot de passe"
+        formControlName="password"
+        inputId="password"
+        [toggleMask]="true"
+        [feedback]="false"
+        autocomplete="off"
+        styleClass="w-full"
+        inputStyleClass="surface-border w-full"
+      />
+      <p-message *ngIf="formGroup.get('password')?.hasError('pattern') && formGroup.get('password')?.touched"
+                 severity="error"
+                 text="Le mot de passe doit contenir au moins 8 caractères, une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial."
+                 styleClass="mt-1"></p-message>
+    </div>
     <p-message *ngIf="errorMessage" severity="error" icon="pi pi-times-circle" styleClass="mb-2" class="p-2 mb-2">{{errorMessage}}</p-message>
     <p-button class="mx-auto" label="Sauvegarder" type="submit" [disabled]="formGroup.invalid"/>
   </form>
   <p-button class="mx-auto colorButton" label="Se déconnecter" (onClick)="onDisconnect()" [text]="true" severity="danger"/>
 </main>
+<p-toast/>

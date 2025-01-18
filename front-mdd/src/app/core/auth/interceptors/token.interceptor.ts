@@ -47,7 +47,7 @@ export class TokenInterceptor implements HttpInterceptor {
   private handle401Error(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (this.tokenService.getRefreshToken() === null) {
       this.router.navigate(['/auth/login'])
-      return throwError(() => new Error("Refresh token is missing"))
+      return throwError(() => new Error("Credentials error"))
     } else if (!this.isRefreshing) {
       this.isRefreshing = true;
       this.refreshTokenSubject.next(null);

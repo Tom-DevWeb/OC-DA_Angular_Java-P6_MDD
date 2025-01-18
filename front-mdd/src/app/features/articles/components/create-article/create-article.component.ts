@@ -89,7 +89,7 @@ export class CreateArticleComponent implements OnInit {
           },
           error: (err) => {
             console.error(err);
-            this.errorMessage = err.message;
+            this.errorMessage = err.error != null ? err.error.message : err.message;
           }
         }
       )

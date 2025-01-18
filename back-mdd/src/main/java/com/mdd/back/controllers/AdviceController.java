@@ -64,4 +64,10 @@ public class AdviceController {
     @ExceptionHandler({IllegalAccessException.class})
     public @ResponseBody void handleIllegalAccessException(IllegalAccessException ex) {}
 
+    @ResponseStatus(BAD_REQUEST)
+    @ExceptionHandler({IllegalArgumentException.class})
+    public @ResponseBody ErrorDto handleException(IllegalArgumentException ex) {
+        return new ErrorDto(BAD_REQUEST.toString(), ex.getMessage());
+    }
+
 }

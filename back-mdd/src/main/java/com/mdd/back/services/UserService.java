@@ -68,6 +68,12 @@ public class UserService implements UserDetailsService {
                 throw new IllegalArgumentException("Cet email est déjà utilisé par un autre utilisateur.");
             }
         }
+        if (userDto.getPassword() != null && !userDto.getPassword().isBlank()) {
+            String hashedPassword = bCryptPasswordEncoder.encode(userDto.getPassword());
+            userDto.setPassword(hashedPassword);
+        } else {
+            userDto.setPassword(null);
+        }
 
         userMapper.updateUserFromDto(userDto, user);
 
