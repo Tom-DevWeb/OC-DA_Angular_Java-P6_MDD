@@ -35,13 +35,6 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
     }
 
-    public UserResponseDto getUserById(Long userId) throws UsernameNotFoundException {
-        User user = this.userRepository.findById(userId)
-                .orElseThrow(() -> new UsernameNotFoundException("Utilisateur non trouvé"));
-
-        return userMapper.toUserDto(user);
-    }
-
     public UserResponseDto getUserByEmail(String email) throws UsernameNotFoundException {
         User user = this.userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("Utilisateur non trouvé"));
@@ -85,7 +78,5 @@ public class UserService implements UserDetailsService {
         return this.userRepository.findByEmail(username)
                 .orElseThrow(() -> new BadCredentialsException("Mauvaise authentification"));
     }
-
-
 
 }
