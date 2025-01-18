@@ -13,5 +13,5 @@ Faire `npm install`
 
 Le compte Admin par default :
 - login: admin@example.com
-- password: 
+- password: password
 
