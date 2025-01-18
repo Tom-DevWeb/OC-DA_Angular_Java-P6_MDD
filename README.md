@@ -32,11 +32,11 @@ L'objectif de ce projet est de développer, la version MVP d'une application ful
 
 ### Front-end
 
-[Lien README du Front-end](./front/README.md)
+[Lien README du Front-end](./front-mdd/README.md)
 
 ### Back-end
 
-[Lien README du Back-end](./back/README.md)
+[Lien README du Back-end](./back-mdd/README.md)
 
 ## Etape de conception
 
@@ -59,7 +59,6 @@ Rédaction du README et de la documentation.
 ## Ressources
 
 - Script SQL
-- Collection Postamn
-- Images
+- Collection Postman
 
 
