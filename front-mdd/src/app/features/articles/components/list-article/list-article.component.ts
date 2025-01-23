@@ -4,7 +4,7 @@ import {ArticleService} from '../../services/article.service';
 import {ArticleResponse} from '../../models/articleResponse';
 import {AsyncPipe, DatePipe, NgFor, NgIf, TitleCasePipe} from '@angular/common';
 import {DataView} from 'primeng/dataview';
-import {Observable} from 'rxjs';
+import {map, Observable} from 'rxjs';
 import {RouterLink} from '@angular/router';
 
 @Component({
@@ -44,7 +44,15 @@ export class ListArticleComponent implements OnInit {
   }
 
   getArticles() {
-    this.articles$ = this.articleService.getArticles()
+    this.articles$ = this.articleService.getArticles().pipe(
+      map((articles: ArticleResponse[]) =>
+      articles.sort((a, b) => {
+        const dateA = new Date(a.createdAt).getTime()
+        const dateB = new Date(b.createdAt).getTime()
+        return dateB - dateA
+      })
+      )
+    )
     this.articles$.subscribe({
       error: (error) => {
         console.error(error);
